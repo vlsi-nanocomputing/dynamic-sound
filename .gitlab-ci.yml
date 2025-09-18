@@ -1,0 +1,15 @@
+stages:
+  - tests
+
+test:
+  stage: tests
+  tags: ["python3.10"]
+  script:
+    - python3.10 -m venv venv
+    - source venv/bin/activate
+    - pip3.10 install .[dev]
+    - python3.10 -m pytest --cov=. --cov-report=term-missing --cov-fail-under=80
+  only:
+    - develop
+    - /^release.*/
+    - master
