@@ -4,7 +4,7 @@ from collections import namedtuple
 import random
 from scipy.spatial.transform import Rotation
 
-class CustomArray:
+class HedraPhoneGenerator:
     MicPCB = namedtuple('MicPCB', ['mics', 'faces'])
     
     @staticmethod
@@ -12,10 +12,10 @@ class CustomArray:
         R= Rotation.from_euler('zyx', [angle_z, angle_y, angle_x], degrees=True).as_matrix()
         return R @ points
 
-    def __init__(self, num_external_mics=6, radius_mics=0.012, radius_pcb=0.022, thickness=0.05, sideboard_angle=30, spacing=0.0, rnd_angle=None, rnd_position=None):
+    def __init__(self, num_external_mics=6, radius_mics=0.012, radius_pcb=0.022, sideboard_angle=30, spacing=0.0, rnd_angle=None, rnd_position=None):
         self.pcb = []
         mics = self._generate_mics(num_external_mics, radius_mics)
-        faces = self._generate_faces(num_external_mics, radius_pcb, thickness)
+        faces = self._generate_faces(num_external_mics, radius_pcb)
         
         # randomize pcb angles
         if rnd_angle is not None:
@@ -34,12 +34,12 @@ class CustomArray:
             mics = np.array([[pos_x], [pos_y], [pos_z]]) + mics
             faces = np.array([[pos_x], [pos_y], [pos_z]]) + faces
         
-        self.pcb.append(CustomArray.MicPCB(mics=mics, faces=faces))
+        self.pcb.append(self.MicPCB(mics=mics, faces=faces))
 
         for i in range(num_external_mics):
 
             mics = self._generate_mics(num_external_mics, radius_mics)
-            faces = self._generate_faces(num_external_mics, radius_pcb, thickness)
+            faces = self._generate_faces(num_external_mics, radius_pcb)
             
             # randomize pcb angles
             if rnd_angle is not None:
@@ -69,7 +69,7 @@ class CustomArray:
             faces = np.array([[spacing], [0.0], [0.0]]) + faces
             faces = self.rotate_points(faces, angle_z=i*360.0/num_external_mics, angle_y=0.0, angle_x=0.0)
 
-            self.pcb.append(CustomArray.MicPCB(mics=mics, faces=faces))
+            self.pcb.append(self.MicPCB(mics=mics, faces=faces))
 
     def _generate_mics(self, num_mics, radius):
         mics = [(0.0, 0.0, 0.0)]  # center mic
@@ -81,7 +81,7 @@ class CustomArray:
             mics.append((x, y, z))
         return np.array(mics).T
 
-    def _generate_faces(self, num_mics, radius, thickness):
+    def _generate_faces(self, num_mics, radius):
         faces = []
         for i in range(num_mics):
             angle = ((2 * np.pi * i) - np.pi) / num_mics
@@ -92,4 +92,24 @@ class CustomArray:
         return np.array(faces).T
     
     def get_microphones(self) -> np.ndarray:
-        return np.concatenate([pcb.mics for pcb in self.pcb], axis=1)
+        return np.concatenate([pcb.mics for pcb in self.pcb], axis=1).T
+
+
+HedraPhone_v1 = HedraPhoneGenerator(
+    num_external_mics=5,
+    radius_mics=0.012,
+    radius_pcb=0.022,
+    sideboard_angle=63.43,
+    spacing=0.022
+)
+
+HedraPhone_v2 = HedraPhoneGenerator(
+    num_external_mics=5,
+    radius_mics=0.014,
+    radius_pcb=0.022,
+    sideboard_angle=63.43,
+    spacing=0.022
+)
+
+
+
