@@ -4,7 +4,7 @@ from scipy.spatial.transform import Rotation, Slerp
 from scipy.interpolate import interp1d
 
 class Path:
-    def __init__(self, *, positions=None, file=None):
+    def __init__(self, positions=None, *, file=None):
         self.positions = None
         self.duration = 0.0
 

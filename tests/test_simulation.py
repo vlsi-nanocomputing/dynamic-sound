@@ -15,7 +15,7 @@ def test_simulation():
     mic_path = ds.Path(file="tests/resources/paths/camera_path.csv")
     sim.add_microphone(path=mic_path, microphone=ds.microphones.MicrophoneArray(positions=[
                      [0.0, 0.0, 0.0,        0.0, 0.0, 0.0, 0.0]
-            ], file_path="tests/_tmp/recording_drone_sound.wav", sample_rate=48_000)
+            ], file_path="tests/_tmp/recording_drone_sound.wav", sample_rate=8_000)
     )
 
     drone_sound = ds.sources.AudioFile(filename=r"tests/resources/sounds/flying_drone.wav", sample_rate=48_000, gain_db=10.0, loop=True)
@@ -34,8 +34,8 @@ def test_simulation_2():
             [0.0,     0.0, 2.0, 1.0,        1.0, 0.0, 0.0, 0.0],
             [30.0,    0.0, 2.0, 1.0,        1.0, 0.0, 0.0, 0.0]
         ]), microphone=ds.microphones.MicrophoneArray(positions=[
-                     [0.0, 0.0, 0.0,        0.0, 0.0, 0.0, 0.0]
-            ], file_path="tests/_tmp/recording_drone_path_interpolation.wav", sample_rate=48_000)
+                     [0.0, 0.0, 0.0,        1.0, 0.0, 0.0, 0.0]
+            ], file_path="tests/_tmp/recording_drone_path_interpolation.wav", sample_rate=8_000)
     )
 
     drone_sound = ds.sources.AudioFile(filename=r"tests/resources/sounds/flying_drone.wav", sample_rate=48_000, gain_db=10.0, loop=True)
@@ -63,20 +63,20 @@ def test_simulation_2():
 def test_simulation_3():
     sim = ds.Simulation(temperature=20, pressure=1, relative_humidity=50)
     sim.add_microphone(path=ds.Path([
-            [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0],
-            [8.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0]
+            [0.0, 0.0, 0.0, 1.0,       1.0, 0.0, 0.0, 0.0],
+            [8.0, 0.0, 0.0, 1.0,       1.0, 0.0, 0.0, 0.0]
         ]), microphone=ds.microphones.Hedraphone_v2(file_path="tests/_tmp/recording.wav", sample_rate=8_000)
     )
 
     white_noise = ds.sources.WhiteNoise(duration=8.0, sample_rate=48_000, amplitude=1.0)
     sim.add_source(path=ds.Path([
-            [0.0, 3.0, 20.0, 1.0, 0.0, 0.0, 0.0, 0.0],
-            [8.0, 3.0, -20.0, 1.0, 0.0, 0.0, 0.0, 0.0]
+            [0.0, 3.0, 20.0, 1.0,      1.0, 0.0, 0.0, 0.0],
+            [8.0, 3.0, -20.0, 1.0,     1.0, 0.0, 0.0, 0.0]
         ]), source=white_noise
     )
     sim.add_source(path=ds.Path([
-            [0.0, 3.0, 20.0, -1.0, 0.0, 0.0, 0.0, 0.0],
-            [8.0, 3.0, -20.0, -1.0, 0.0, 0.0, 0.0, 0.0]
+            [0.0, 3.0, 20.0, -1.0,     1.0, 0.0, 0.0, 0.0],
+            [8.0, 3.0, -20.0, -1.0,    1.0, 0.0, 0.0, 0.0]
         ]), source=white_noise
     )
     sim.run()
@@ -86,28 +86,28 @@ def test_simulation_4():
     sim = ds.Simulation(temperature=20, pressure=1, relative_humidity=50)
     sim.air.set(temperature=35, pressure=1.5, relative_humidity=90)
     sim.add_microphone(path=ds.Path([
-            [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0],
-            [8.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0]
+            [0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0],
+            [8.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0]
         ]), microphone=ds.microphones.Hedraphone_v2(file_path="tests/_tmp/recording.wav", sample_rate=8_000)
     )
 
     sin_signal = ds.sources.SineWave(frequency=2_000, sample_rate=48_000, amplitude=1.0)
     sim.add_source(path=ds.Path([
-            [0.0, 3.0, 20.0, 1.0, 0.0, 0.0, 0.0, 0.0],
-            [8.0, 3.0, -20.0, 1.0, 0.0, 0.0, 0.0, 0.0]
+            [0.0, 3.0, 20.0, 1.0, 1.0, 0.0, 0.0, 0.0],
+            [8.0, 3.0, -20.0, 1.0, 1.0, 0.0, 0.0, 0.0]
         ]), source=sin_signal
     )
     sim.add_source(path=ds.Path([
-            [0.0, 3.0, 20.0, -1.0, 0.0, 0.0, 0.0, 0.0],
-            [8.0, 3.0, -20.0, -1.0, 0.0, 0.0, 0.0, 0.0]
+            [0.0, 3.0, 20.0, -1.0, 1.0, 0.0, 0.0, 0.0],
+            [8.0, 3.0, -20.0, -1.0, 1.0, 0.0, 0.0, 0.0]
         ]), source=sin_signal
     )
     sim.run()
 
 def test_path():
     path = ds.Path([
-        [0.0, 3.0, 20.0, 1.0, 0.0, 0.0, 0.0, 0.0],
-        [8.0, 3.0, -20.0, 1.0, 0.0, 0.0, 0.0, 0.0]
+        [0.0, 3.0, 20.0, 1.0, 1.0, 0.0, 0.0, 0.0],
+        [8.0, 3.0, -20.0, 1.0, 1.0, 0.0, 0.0, 0.0]
     ])
     path.save_path("tests/_tmp/test_path.path")
 
@@ -116,4 +116,4 @@ def test_path():
     
 
 if __name__ == "__main__":
-    test_simulation()
+    test_simulation_4()

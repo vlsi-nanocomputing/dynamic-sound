@@ -73,10 +73,8 @@ class Hedraphone(MicrophoneArray):
 
             self.pcb.append(self.MicPCB(mics=mics, faces=faces))
         
-        positions = self.get_microphones()
-        rotations = np.zeros((len(positions), 4))
-        tmp = np.hstack((positions, rotations))
-
+        positions = np.concatenate([pcb.mics for pcb in self.pcb], axis=1).T
+        rotations = np.tile([1, 0, 0, 0], (len(positions), 1))
         super().__init__(np.hstack((positions, rotations)), file_path, sample_rate, sample_width)
 
     def _generate_mics(self, num_mics, radius):
@@ -98,10 +96,7 @@ class Hedraphone(MicrophoneArray):
             z = 0.0
             faces.append((x, y, z))
         return np.array(faces).T
-    
-    def get_microphones(self) -> np.ndarray:
-        return np.concatenate([pcb.mics for pcb in self.pcb], axis=1).T
-    
+
     def plot_figure(self, show=True, ax=None):
         import matplotlib.pyplot as plt
         from mpl_toolkits.mplot3d.art3d import Poly3DCollection
@@ -137,4 +132,4 @@ class Hedraphone_v2(Hedraphone):
     def __init__(self, file_path, rnd_angle=None, rnd_position=None, sample_rate=48000, sample_width=4):
         super().__init__(file_path, num_external_mics=5, radius_mics=0.014, radius_pcb=0.022, thickness=0.00155, sideboard_angle=63.43, spacing=0.022, rnd_angle=rnd_angle, rnd_position=rnd_position, sample_rate=sample_rate, sample_width=sample_width)
 
-hp = Hedraphone_v1(file_path="")
+
