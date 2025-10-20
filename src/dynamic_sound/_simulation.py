@@ -1,17 +1,16 @@
 import os
 from tqdm import tqdm
-import time
 import numpy as np
 import wave
 from collections import deque
-
-
+from scipy.signal import firwin2, lfilter
 
 from ._environment import Air
 from .acoustics.standards.ISO_9613_1_1993 import sound_speed, attenuation_coefficients, REFERENCE_TEMPERATURE, SOUND_SPEED
-from ._path import Path
+from .path import Path
 from .sources import Source
 from .microphones import MicrophoneArray
+from scipy.spatial.transform import Rotation as R
 
 class Simulation:
     def __init__(self, temperature=20, pressure=1, relative_humidity=50):
@@ -26,7 +25,7 @@ class Simulation:
         self._sources.append((path, source))
 
     @staticmethod
-    def _get_emission(position_receiver, time_receiver, source_path, c=SOUND_SPEED):
+    def _compute_emission(position_receiver, time_receiver, source_path, c=SOUND_SPEED):
         for path_index in range(len(source_path.positions) - 1):
             t0 = source_path.positions[path_index, 0]
             t1 = source_path.positions[path_index+1, 0]
@@ -46,22 +45,26 @@ class Simulation:
                         if C == 0:
                             print("ERROR: infinite values")
                             time_emission = t0
-                            return time_emission, p0 + (v * time_emission)
+                            position_emission = p0 + (v * (time_emission - t0))
+                            return time_emission, position_emission
                     else:
                         time_emission = (-C / B) + t0
                         if t0 <= time_emission < t1 and time_emission <= time_receiver:
-                            return time_emission, p0 + v * time_emission
+                            position_emission = p0 + (v * (time_emission - t0))
+                            return time_emission, position_emission
                 else:
                     delta = B**2 - 4*A*C
                     if delta == 0:
                         time_emission = -B / ( 2 * A )
                         if t0 <= time_emission < t1 and time_emission <= time_receiver:
-                            return time_emission, p0 + v * time_emission
+                            position_emission = p0 + (v * (time_emission - t0))
+                            return time_emission, position_emission
                     elif delta > 0:
                         sqrt_delta = np.sqrt(delta)
                         time_emission = min((-B - sqrt_delta) / (2*A) + t0, (-B + sqrt_delta) / (2*A) + t0)
                         if t0 <= time_emission < t1 and time_emission <= time_receiver:
-                            return time_emission, p0 + v * time_emission
+                            position_emission = p0 + (v * (time_emission - t0))
+                            return time_emission, position_emission
         return None, None
     
     @staticmethod
@@ -83,12 +86,21 @@ class Simulation:
         filt_coeffs[0:int((numtaps+1)/2)-1] = np.flip(filt_coeffs[int((numtaps+1)/2):])
         return filt_coeffs
 
+
+    @staticmethod
+    def apply_fir_from_coefficients(attenuation_coefficients, sample_rate, num_taps):
+        num_coeffs = len(attenuation_coefficients)
+        freqs = np.linspace(0, sample_rate / 2, num=num_coeffs)
+        freqs_norm = freqs / (sample_rate / 2)  # Normalize frequency to [0, 1] for firwin2 (1 corresponds to Nyquist)
+        fir_coeffs = firwin2(num_taps, freqs_norm, attenuation_coefficients)
+        return fir_coeffs
+
     def run(self):
         
         c = sound_speed(temperature=self.air.temperature, reference_temperature=REFERENCE_TEMPERATURE)
         
 
-        for microphone_path, microphone in tqdm(self._microphones):
+        for microphone_path, microphone in self._microphones:
             os.makedirs(os.path.dirname(microphone.file_path), exist_ok=True)
             with wave.open(microphone.file_path, mode="wb") as wave_file:
                 wave_file.setnchannels(microphone.num_channels)
@@ -109,22 +121,30 @@ class Simulation:
                 out_samples = np.zeros((int(microphone.sample_rate * microphone_path.duration), microphone.num_channels))
 
                 for sample_index, time_receiver in tqdm([(index, index/microphone.sample_rate) for index in range(int(microphone.sample_rate * microphone_path.duration))]):
-                    for channel_index, microphone_position in enumerate(microphone.positions):
+                    position_array, rotation_array = microphone_path.get_position(time_receiver)
+
+                    for channel_index, microphone_position in enumerate(microphone.get_microphones()):
                         for source_path, source in self._sources:
 
-                            position_receiver = microphone_path.get_position(time_receiver) + microphone_position[1:4]
-                            time_emission, position_emission = self._get_emission(position_receiver=position_receiver, time_receiver=time_receiver, source_path=source_path, c=c)
+                            rotation_receiver = R.from_quat(rotation_array)
+                            position_receiver = position_array + rotation_receiver.apply(microphone_position[1:4])
+
+                            time_emission, position_emission = self._compute_emission(position_receiver=position_receiver, time_receiver=time_receiver, source_path=source_path, c=c)
 
                             if time_emission is not None:
                                 distance = np.linalg.norm(position_receiver - position_emission)
-                                geometric_attenuation = 1 / distance
-                                air_filter_coeff = self._compute_air_absorption_filter(pseud_A, airAbsorptionCoefficients, distance, numtaps=11)
 
-                                out_buffer[channel_index].appendleft( source.get_sample(time_emission) * geometric_attenuation )
+                                geometric_attenuation = 1.0 / distance
+                                air_filter_coeff = self._compute_air_absorption_filter(pseud_A, airAbsorptionCoefficients, distance, numtaps=11)
+                                #air_filter_coeff = 
+                                # Apply FIR filter to white noise
+                                #filtered_signal = lfilter(air_filter_coeff, [1.0], out_buffer[channel_index])
+
+                                out_buffer[channel_index].append(source.get_sample(time_emission) * geometric_attenuation )
                                 out_samples[sample_index, channel_index] += air_filter_coeff.dot(out_buffer[channel_index])
                 
                 wave_file.writeframes((out_samples * (2**31 - 1)).astype(np.int32).tobytes())
-                wave_file.close()
+
 
 
 

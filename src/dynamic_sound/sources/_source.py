@@ -9,6 +9,10 @@ class Source(ABC):
 
     @abstractmethod
     def get_sample(self, time:float):
-        pass
+        """return the sample value at the specified time instant. Typically an interpolation technique is used here when the source is a sapmled signal.
+
+        :param time: time of the requested signal sample.
+        :type time: float
+        """
 
 

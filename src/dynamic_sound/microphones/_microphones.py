@@ -7,3 +7,6 @@ class MicrophoneArray:
         self.sample_width = sample_width
         self.file_path = file_path
         self.sample_rate = sample_rate
+
+    def get_microphones(self) -> np.ndarray:
+        return self.positions
