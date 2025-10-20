@@ -13,4 +13,4 @@ test:
   only:
     - develop
     - /^release.*/
-    - master
+    - main
