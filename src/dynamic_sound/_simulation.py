@@ -44,9 +44,7 @@ class Simulation:
                     if B == 0:
                         if C == 0:
                             print("ERROR: infinite values")
-                            time_emission = t0
-                            position_emission = p0 + (v * (time_emission - t0))
-                            return time_emission, position_emission
+                            return None, None
                     else:
                         time_emission = (-C / B) + t0
                         if t0 <= time_emission < t1 and time_emission <= time_receiver:
@@ -54,12 +52,7 @@ class Simulation:
                             return time_emission, position_emission
                 else:
                     delta = B**2 - 4*A*C
-                    if delta == 0:
-                        time_emission = -B / ( 2 * A )
-                        if t0 <= time_emission < t1 and time_emission <= time_receiver:
-                            position_emission = p0 + (v * (time_emission - t0))
-                            return time_emission, position_emission
-                    elif delta > 0:
+                    if delta > 0:
                         sqrt_delta = np.sqrt(delta)
                         time_emission = min((-B - sqrt_delta) / (2*A) + t0, (-B + sqrt_delta) / (2*A) + t0)
                         if t0 <= time_emission < t1 and time_emission <= time_receiver:

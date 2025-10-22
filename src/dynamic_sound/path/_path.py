@@ -25,43 +25,42 @@ class Path:
     
     def get_position(self, time):
         # Ensure time is within range
-        if not (self.positions[0, 0] <= time <= self.positions[-1, 0]):
-            return None, None
-            
-        # Find interval containing `time`
-        for i in range(len(self.positions) - 1):
-            t0 = self.positions[i, 0]
-            t1 = self.positions[i + 1, 0]
-            if t0 <= time < t1:
-                # Linear interpolation factor
-                alpha = (time - t0) / (t1 - t0)
+        if self.positions[0, 0] <= time < self.positions[-1, 0]:
 
-                # --- Position interpolation (linear) ---
-                p0 = self.positions[i, 1:4]
-                p1 = self.positions[i + 1, 1:4]
-                position = p0 + alpha * (p1 - p0)
+            # Find interval containing `time`
+            for i in range(len(self.positions) - 1):
+                t0 = self.positions[i, 0]
+                t1 = self.positions[i + 1, 0]
+                if t0 <= time < t1:
+                    # Linear interpolation factor
+                    alpha = (time - t0) / (t1 - t0)
 
-                # --- Rotation interpolation (slerp) ---
-                q0 = self.positions[i, 4:8]
-                q1 = self.positions[i + 1, 4:8]
-                
-                q0 /= np.linalg.norm(q0)  # Normalize quaternions to avoid numerical issues
-                q1 /= np.linalg.norm(q1)
+                    # --- Position interpolation (linear) ---
+                    p0 = self.positions[i, 1:4]
+                    p1 = self.positions[i + 1, 1:4]
+                    position = p0 + alpha * (p1 - p0)
 
-                # Create Rotation objects
-                key_rots = Rotation.from_quat([q0, q1])
-                key_times = [0, 1]
+                    # --- Rotation interpolation (slerp) ---
+                    q0 = self.positions[i, 4:8]
+                    q1 = self.positions[i + 1, 4:8]
+                    
+                    q0 /= np.linalg.norm(q0)  # Normalize quaternions to avoid numerical issues
+                    q1 /= np.linalg.norm(q1)
 
-                # Create Slerp object
-                slerp = Slerp(key_times, key_rots)
+                    # Create Rotation objects
+                    key_rots = Rotation.from_quat([q0, q1])
+                    key_times = [0, 1]
 
-                # Interpolate
-                interp_rot = slerp([alpha])[0]
-                rotation = interp_rot.as_quat()
+                    # Create Slerp object
+                    slerp = Slerp(key_times, key_rots)
 
-                return position, rotation
+                    # Interpolate
+                    interp_rot = slerp([alpha])[0]
+                    rotation = interp_rot.as_quat()
+
+                    return position, rotation
         
-        # If time is after the last point
+        # If time not in the range
         return None, None
 
     

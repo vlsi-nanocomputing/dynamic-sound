@@ -1,7 +1,7 @@
 import dynamic_sound as ds
 
-microphone_sample_rate = 8_000
-source_sample_rate = 8_000
+microphone_sample_rate = 100
+source_sample_rate = 100
 
 def test_simulation():
     sim = ds.Simulation(temperature=20, pressure=1, relative_humidity=50)
@@ -106,6 +106,10 @@ def test_path():
 
     path2.plot_path_3d(show=False)
     path2.plot_quaternion_directions(show=False)
+
+    position, rotation = path2.get_position(-1)
+    assert position is None
+    assert rotation is None
 
 
 if __name__ == "__main__":

@@ -24,7 +24,6 @@ class Hedraphone(MicrophoneArray):
             angle_x = random.uniform(-rnd_angle, rnd_angle)
             angle_y = random.uniform(-rnd_angle, rnd_angle)
             angle_z = random.uniform(-rnd_angle, rnd_angle)
-            print(f"rot: {angle_x} {angle_y} {angle_z}")
             mics = self.rotate_points(mics, angle_z, angle_y, angle_x)
             faces = self.rotate_points(faces, angle_z, angle_y, angle_x)
 

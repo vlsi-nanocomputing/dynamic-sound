@@ -7,7 +7,7 @@ test:
   script:
     - python3.10 -m venv venv
     - source venv/bin/activate
-    - pip3.10 install .
+    - pip3.10 install -e .
     - pip3.10 install pytest pytest-cov
     - python3.10 -m pytest --cov=src --cov-report=term-missing --cov-fail-under=80 --capture=no
   only:
