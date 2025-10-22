@@ -45,8 +45,8 @@ class Path:
                 q0 = self.positions[i, 4:8]
                 q1 = self.positions[i + 1, 4:8]
                 
-                # q0 /= np.linalg.norm(q0)  # Normalize quaternions to avoid numerical issues
-                # q1 /= np.linalg.norm(q1)
+                q0 /= np.linalg.norm(q0)  # Normalize quaternions to avoid numerical issues
+                q1 /= np.linalg.norm(q1)
 
                 # Create Rotation objects
                 key_rots = Rotation.from_quat([q0, q1])

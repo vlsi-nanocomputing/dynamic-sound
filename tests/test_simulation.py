@@ -1,27 +1,18 @@
 import dynamic_sound as ds
-# ds.Simulation
-# ds.Path
-# ds.sources.SineWave
-# ds.sources.WhiteNoise
-# ds.microphones.MicrophoneArray
-# ds.microphones.Hedraphone
-# ds.microphones.Hedraphone_v1
-# ds.microphones.Hedraphone_v2
 
-
+microphone_sample_rate = 8_000
+source_sample_rate = 8_000
 
 def test_simulation():
     sim = ds.Simulation(temperature=20, pressure=1, relative_humidity=50)
     mic_path = ds.Path(file="tests/resources/paths/camera_path.csv")
     sim.add_microphone(path=mic_path, microphone=ds.microphones.MicrophoneArray(positions=[
                      [0.0, 0.0, 0.0,        0.0, 0.0, 0.0, 0.0]
-            ], file_path="tests/_tmp/recording_drone_sound.wav", sample_rate=8_000)
+            ], file_path="tests/_tmp/airsim_path_drone_sound.wav", sample_rate=microphone_sample_rate)
     )
 
-    drone_sound = ds.sources.AudioFile(filename=r"tests/resources/sounds/flying_drone.wav", sample_rate=48_000, gain_db=10.0, loop=True)
-    #drone_sound = ds.sources.SineWave(frequency=2_000, sample_rate=48_000, amplitude=1.0)
+    drone_sound = ds.sources.AudioFile(filename=r"tests/resources/sounds/flying_drone.wav", sample_rate=source_sample_rate, gain_db=10.0, loop=True)
     drone_path = ds.Path(file="tests/resources/paths/drone_path.csv")
-    #path.interpolate_path(50)
     sim.add_source(path=drone_path, source=drone_sound)
     drone_path.positions[:,3] = -drone_path.positions[:,3]
     sim.add_source(path=drone_path, source=drone_sound)
@@ -35,11 +26,10 @@ def test_simulation_2():
             [30.0,    0.0, 2.0, 1.0,        1.0, 0.0, 0.0, 0.0]
         ]), microphone=ds.microphones.MicrophoneArray(positions=[
                      [0.0, 0.0, 0.0,        1.0, 0.0, 0.0, 0.0]
-            ], file_path="tests/_tmp/recording_drone_path_interpolation.wav", sample_rate=8_000)
+            ], file_path="tests/_tmp/path_with_interpolation_drone_sound.wav", sample_rate=microphone_sample_rate)
     )
 
-    drone_sound = ds.sources.AudioFile(filename=r"tests/resources/sounds/flying_drone.wav", sample_rate=48_000, gain_db=10.0, loop=True)
-    #drone_sound = ds.sources.SineWave(frequency=2_000, sample_rate=48_000, amplitude=1.0)
+    drone_sound = ds.sources.AudioFile(filename=r"tests/resources/sounds/flying_drone.wav", sample_rate=source_sample_rate, gain_db=10.0, loop=True)
     path = ds.Path([
         [ 0.0,      0.0,   0.0,   0.0,     0.0, 0.0, 0.0, 1.0],            # Start on ground, level
         [ 5.0,      0.0,   0.0,   0.0,     0.0, 0.0, 0.0, 1.0],            # Hover on ground (idle until 5s)
@@ -65,10 +55,10 @@ def test_simulation_3():
     sim.add_microphone(path=ds.Path([
             [0.0, 0.0, 0.0, 1.0,       1.0, 0.0, 0.0, 0.0],
             [8.0, 0.0, 0.0, 1.0,       1.0, 0.0, 0.0, 0.0]
-        ]), microphone=ds.microphones.Hedraphone_v2(file_path="tests/_tmp/recording.wav", sample_rate=8_000)
+        ]), microphone=ds.microphones.Hedraphone_v1(file_path="tests/_tmp/white_noise_and_refletion.wav", sample_rate=microphone_sample_rate)
     )
 
-    white_noise = ds.sources.WhiteNoise(duration=8.0, sample_rate=48_000, amplitude=1.0)
+    white_noise = ds.sources.WhiteNoise(duration=8.0, sample_rate=source_sample_rate, amplitude=1.0)
     sim.add_source(path=ds.Path([
             [0.0, 3.0, 20.0, 1.0,      1.0, 0.0, 0.0, 0.0],
             [8.0, 3.0, -20.0, 1.0,     1.0, 0.0, 0.0, 0.0]
@@ -88,10 +78,10 @@ def test_simulation_4():
     sim.add_microphone(path=ds.Path([
             [0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0],
             [8.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0]
-        ]), microphone=ds.microphones.Hedraphone_v2(file_path="tests/_tmp/recording.wav", sample_rate=8_000)
+        ]), microphone=ds.microphones.Hedraphone_v2(file_path="tests/_tmp/sinewave_and_reflection.wav", sample_rate=microphone_sample_rate, rnd_angle=0.01, rnd_position=0.001)
     )
 
-    sin_signal = ds.sources.SineWave(frequency=2_000, sample_rate=48_000, amplitude=1.0)
+    sin_signal = ds.sources.SineWave(frequency=2_000, sample_rate=source_sample_rate, amplitude=1.0)
     sim.add_source(path=ds.Path([
             [0.0, 3.0, 20.0, 1.0, 1.0, 0.0, 0.0, 0.0],
             [8.0, 3.0, -20.0, 1.0, 1.0, 0.0, 0.0, 0.0]
@@ -113,7 +103,10 @@ def test_path():
 
     path2 = ds.Path()
     path2.load_path("tests/_tmp/test_path.path")
-    
+
+    path2.plot_path_3d(show=False)
+    path2.plot_quaternion_directions(show=False)
+
 
 if __name__ == "__main__":
-    test_simulation_4()
+    test_simulation()

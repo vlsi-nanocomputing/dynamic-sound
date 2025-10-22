@@ -66,39 +66,9 @@ class Simulation:
                             position_emission = p0 + (v * (time_emission - t0))
                             return time_emission, position_emission
         return None, None
-    
-    @staticmethod
-    def _precompute_pseud_A(frequencies, sample_rate):
-        w = 2 * np.pi * frequencies / (sample_rate / 2)  # Compute air absorption filter
-        L_air = 10  # Filter order - air absorption
-        A = np.zeros((len(w),int(L_air/2 + 1)))  # Matrix A
-        A[:,0] = 1
-        for i in range(len(w)):
-            for j in range(1,int(L_air/2 + 1)):
-                A[i,j] = 2 * np.cos(w[i] * j)
-        return np.linalg.inv(A.T.dot(A)).dot(A.T)
-
-    @staticmethod
-    def _compute_air_absorption_filter(pseud_A, airAbsorptionCoefficients, distance: float, numtaps: int) -> np.ndarray:
-        filt_coeffs = np.empty(numtaps, np.float64)
-        alpha = 10 ** (-airAbsorptionCoefficients * distance / 20)  # Convert coeffs in dB to linear scale
-        filt_coeffs[int((numtaps+1)/2)-1:] = pseud_A.dot(alpha)
-        filt_coeffs[0:int((numtaps+1)/2)-1] = np.flip(filt_coeffs[int((numtaps+1)/2):])
-        return filt_coeffs
-
-
-    @staticmethod
-    def apply_fir_from_coefficients(attenuation_coefficients, sample_rate, num_taps):
-        num_coeffs = len(attenuation_coefficients)
-        freqs = np.linspace(0, sample_rate / 2, num=num_coeffs)
-        freqs_norm = freqs / (sample_rate / 2)  # Normalize frequency to [0, 1] for firwin2 (1 corresponds to Nyquist)
-        fir_coeffs = firwin2(num_taps, freqs_norm, attenuation_coefficients)
-        return fir_coeffs
 
     def run(self):
-        
         c = sound_speed(temperature=self.air.temperature, reference_temperature=REFERENCE_TEMPERATURE)
-        
 
         for microphone_path, microphone in self._microphones:
             os.makedirs(os.path.dirname(microphone.file_path), exist_ok=True)
@@ -108,16 +78,16 @@ class Simulation:
                 wave_file.setframerate(microphone.sample_rate)
 
                 # air absorption filter
+                filter_len = 11
                 frequencies = np.linspace(0, microphone.sample_rate/2, num=20)  # freq bands resolution
-                airAbsorptionCoefficients = attenuation_coefficients(
+                air_absorption_coefficients = attenuation_coefficients(
                     frequency=frequencies,
                     temperature=20 + 273.15,
                     relative_humidity=50,
                     pressure=1 * 101.325
                 )
-                pseud_A = self._precompute_pseud_A(frequencies, microphone.sample_rate)
 
-                out_buffer = [deque(np.zeros(11), maxlen=11) for _ in range(microphone.num_channels)]
+                out_buffer = [deque(np.zeros(filter_len), maxlen=filter_len) for _ in range(microphone.num_channels)]
                 out_samples = np.zeros((int(microphone.sample_rate * microphone_path.duration), microphone.num_channels))
 
                 for sample_index, time_receiver in tqdm([(index, index/microphone.sample_rate) for index in range(int(microphone.sample_rate * microphone_path.duration))]):
@@ -135,13 +105,11 @@ class Simulation:
                                 distance = np.linalg.norm(position_receiver - position_emission)
 
                                 geometric_attenuation = 1.0 / distance
-                                air_filter_coeff = self._compute_air_absorption_filter(pseud_A, airAbsorptionCoefficients, distance, numtaps=11)
-                                #air_filter_coeff = 
-                                # Apply FIR filter to white noise
-                                #filtered_signal = lfilter(air_filter_coeff, [1.0], out_buffer[channel_index])
+                                air_coeff = 10 ** (-air_absorption_coefficients * distance / 20)  # Convert coeffs in dB to linear scale
+                                air_fir_coefficients = firwin2(filter_len, frequencies, air_coeff, fs=microphone.sample_rate)
 
-                                out_buffer[channel_index].append(source.get_sample(time_emission) * geometric_attenuation )
-                                out_samples[sample_index, channel_index] += air_filter_coeff.dot(out_buffer[channel_index])
+                                out_buffer[channel_index].appendleft(source.get_sample(time_emission) * geometric_attenuation)
+                                out_samples[sample_index, channel_index] += air_fir_coefficients.dot(out_buffer[channel_index])
                 
                 wave_file.writeframes((out_samples * (2**31 - 1)).astype(np.int32).tobytes())
 
