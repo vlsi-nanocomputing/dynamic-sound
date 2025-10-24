@@ -64,7 +64,10 @@ class Simulation:
         c = sound_speed(temperature=self.air.temperature, reference_temperature=REFERENCE_TEMPERATURE)
 
         for microphone_path, microphone in self._microphones:
-            os.makedirs(os.path.dirname(microphone.file_path), exist_ok=True)
+            dst_path = os.path.dirname(microphone.file_path)
+            if dst_path:
+                os.makedirs(dst_path, exist_ok=True)
+
             with wave.open(microphone.file_path, mode="wb") as wave_file:
                 wave_file.setnchannels(microphone.num_channels)
                 wave_file.setsampwidth(microphone.sample_width)

@@ -48,7 +48,7 @@ class Path:
                     q1 /= np.linalg.norm(q1)
 
                     # Create Rotation objects
-                    key_rots = Rotation.from_quat([q0, q1])
+                    key_rots = Rotation.from_quat([q0, q1], scalar_first=True)
                     key_times = [0, 1]
 
                     # Create Slerp object
@@ -56,7 +56,7 @@ class Path:
 
                     # Interpolate
                     interp_rot = slerp([alpha])[0]
-                    rotation = interp_rot.as_quat()
+                    rotation = interp_rot.as_quat(scalar_first=True)
 
                     return position, rotation
         
@@ -80,15 +80,15 @@ class Path:
             interp_pos[:, i] = f(t_new)
 
         # --- Quaternion interpolation ---
-        rotations = Rotation.from_quat(quat)
+        rotations = Rotation.from_quat(quat, scalar_first=True)
         slerp = Slerp(t, rotations)
         interp_rot = slerp(t_new)
-        interp_quat = interp_rot.as_quat()
+        interp_quat = interp_rot.as_quat(scalar_first=True)
 
         # Combine interpolated data
         self.positions = np.column_stack([t_new, interp_pos, interp_quat])
 
-    def plot_path_3d(self, show=True, ax=None, dot_every=1):
+    def plot_path_3d(self, show=True, ax=None, dot_every=1, legend=True):
         import matplotlib.pyplot as plt
 
         pos = self.positions[:, 1:4]
@@ -98,17 +98,16 @@ class Path:
             ax = fig.add_subplot(111, projection='3d')
 
         # Path line
-        ax.plot(pos[:, 0], pos[:, 1], pos[:, 2], 'b-', linewidth=1.5, label='Path')
+        ax.plot(pos[:, 0], pos[:, 1], pos[:, 2], 'b-', linewidth=1.5)
 
-        # Intermediate dots
+        # dots
         ax.scatter(
             pos[::dot_every, 0],
             pos[::dot_every, 1],
             pos[::dot_every, 2],
             color='blue',
             s=10,
-            alpha=0.6,
-            label='Intermediate points' if dot_every == 1 else None
+            alpha=0.6
         )
 
         # Start and end points
@@ -116,25 +115,35 @@ class Path:
         ax.scatter(pos[-1, 0], pos[-1, 1], pos[-1, 2], color='red', s=60, label='End', zorder=3)
         
         # Labels and aesthetics
-        ax.set_title("3D Path with Intermediate Points")
+        ax.set_title("3D Path")
         ax.set_xlabel("X")
         ax.set_ylabel("Y")
         ax.set_zlabel("Z")
         ax.legend()
         ax.grid(True)
-        ax.view_init(elev=25, azim=-60)  # nicer default 3D view
+        ax.view_init(elev=25, azim=-60)
+
+        if legend:
+            # Shrink current axis's height by 10% on the bottom
+            box = ax.get_position()
+            ax.set_position([box.x0, box.y0 + box.height * 0.1,
+                             box.width, box.height * 0.9])
+            
+            # Put a legend below current axis
+            ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),
+                      fancybox=True, shadow=True, ncol=5)
 
         if show:
             plt.show()
         return ax
 
 
-    def plot_quaternion_directions(self, show=True, ax=None, step=10, scale=0.1):
+    def plot_quaternion_directions(self, show=True, ax=None, step=1, scale=0.1, legend=True):
         import matplotlib.pyplot as plt
 
         pos = self.positions[:, 1:4]
         quat = self.positions[:, 4:8]
-        rot = Rotation.from_quat(quat)
+        rot = Rotation.from_quat(quat, scalar_first=True)
 
         # Subsample
         idx = np.arange(0, len(pos), step)
@@ -152,16 +161,30 @@ class Path:
             # Each column of R is a local axis in world coordinates
             x_dir, y_dir, z_dir = R[:, 0], R[:, 1], R[:, 2]
 
-            ax.quiver(*origin, *x_dir, length=scale, normalize=True, color='r', linewidth=1.2)
-            ax.quiver(*origin, *y_dir, length=scale, normalize=True, color='g', linewidth=1.2)
-            ax.quiver(*origin, *z_dir, length=scale, normalize=True, color='b', linewidth=1.2)
+            ax.quiver(*origin, *x_dir, length=scale, normalize=True, color='r', linewidth=1)
+            ax.quiver(*origin, *y_dir, length=scale, normalize=True, color='g', linewidth=1)
+            ax.quiver(*origin, *z_dir, length=scale, normalize=True, color='b', linewidth=1)
 
-        ax.set_title("Quaternion Orientation Axes (X=red, Y=green, Z=blue)")
         ax.set_xlabel("X")
         ax.set_ylabel("Y")
         ax.set_zlabel("Z")
+        ax.legend()
         ax.grid(True)
         ax.set_box_aspect([1, 1, 1])
+
+        if legend:
+            ax.plot([], [], [], color='r', label='x')
+            ax.plot([], [], [], color='g', label='y')
+            ax.plot([], [], [], color='b', label='z')
+        
+            # Shrink current axis's height by 10% on the bottom
+            box = ax.get_position()
+            ax.set_position([box.x0, box.y0 + box.height * 0.1,
+                             box.width, box.height * 0.9])
+            
+            # Put a legend below current axis
+            ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),
+                      fancybox=True, shadow=True, ncol=5)
 
         if show:
             plt.show()
