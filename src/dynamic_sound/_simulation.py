@@ -92,8 +92,8 @@ class Simulation:
                     for channel_index, microphone_position in enumerate(microphone.get_microphones()):
                         for source_path, source in self._sources:
 
-                            rotation_receiver = R.from_quat(rotation_array)
-                            position_receiver = position_array + rotation_receiver.apply(microphone_position[1:4])
+                            rotation_receiver = R.from_quat(rotation_array, scalar_first=True)
+                            position_receiver = position_array + rotation_receiver.apply(microphone_position[0:3])
 
                             time_emission, position_emission = self._compute_emission(position_receiver=position_receiver, time_receiver=time_receiver, source_path=source_path, c=c)
 
