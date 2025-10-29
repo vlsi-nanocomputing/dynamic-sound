@@ -1,0 +1,27 @@
+{
+  "SeeDocsAt": "https://github.com/Microsoft/AirSim/blob/master/docs/settings.md",
+  "SettingsVersion": 1.2,
+
+  "SimMode": "Multirotor",
+
+  "ViewMode": "SpringArmChase",
+  
+  "EngineSound": false,
+  "LogMessagesVisible": false,
+
+  "SubWindows": [
+    {
+      "WindowID": 0,
+      "CameraName": "0",
+      "ImageType": 0,
+      "Visible": true
+    }
+  ],
+  
+  "Vehicles": {
+    "SimpleFlight": {
+      "VehicleType": "SimpleFlight",
+      "EnableCollisionPassthrogh": true
+    }
+  }
+}
