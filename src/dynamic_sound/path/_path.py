@@ -121,7 +121,6 @@ class Path:
         ax.set_zlabel("Z")
         ax.legend()
         ax.grid(True)
-        ax.view_init(elev=25, azim=-60)
 
         if legend:
             # Shrink current axis's height by 10% on the bottom

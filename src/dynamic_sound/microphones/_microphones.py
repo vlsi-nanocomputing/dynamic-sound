@@ -10,3 +10,8 @@ class MicrophoneArray:
 
     def get_microphones(self) -> np.ndarray:
         return self.positions
+
+class Microphone(MicrophoneArray):
+    def __init__(self, file_path:str, sample_rate:int=48_000, sample_width=4):
+        position = [[0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0], ]
+        super().__init__(position, file_path, sample_rate, sample_width)

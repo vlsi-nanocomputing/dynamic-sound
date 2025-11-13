@@ -6,9 +6,8 @@ import numpy as np
 
 class AudioFile(Source):
     def __init__(self, filename, sample_rate=None, gain_db=0.0, loop=True):
-        self.signal, sample_rate = librosa.load(filename, sr=sample_rate, mono=True)
-        super().__init__(sample_rate=sample_rate)
-
+        super().__init__()
+        self.signal, self.sample_rate = librosa.load(filename, sr=sample_rate, mono=True)
         self.loop = loop
         self.length = len(self.signal)
         if gain_db != 0.0:
