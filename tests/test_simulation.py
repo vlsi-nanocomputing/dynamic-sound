@@ -81,7 +81,7 @@ def test_simulation_4():
         ]), microphone=ds.microphones.Hedraphone_v2(file_path="tests/_tmp/sinewave_and_reflection.wav", sample_rate=microphone_sample_rate, rnd_angle=0.01, rnd_position=0.001)
     )
 
-    sin_signal = ds.sources.SineWave(frequency=2_000, sample_rate=source_sample_rate, amplitude=1.0)
+    sin_signal = ds.sources.SineWave(frequency=2_000, amplitude=1.0)
     sim.add_source(path=ds.Path([
             [0.0, 3.0, 20.0, 1.0, 1.0, 0.0, 0.0, 0.0],
             [8.0, 3.0, -20.0, 1.0, 1.0, 0.0, 0.0, 0.0]
