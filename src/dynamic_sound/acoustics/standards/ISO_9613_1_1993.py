@@ -28,7 +28,7 @@ def attenuation_coefficients(frequency, temperature, relative_humidity, pressure
     frN = relaxation_frequency_nitrogen(pressure, temperature, h, reference_temperature=reference_temperature, reference_pressure=reference_pressure)
 
     return 8.686 * frequency**2 * (
-        (1.84e-11 * (pressure / reference_pressure)**-1 * (temperature / reference_temperature)**0.5) +
+        (1.84e-11 * (pressure / reference_pressure)**(-1.0) * (temperature / reference_temperature)**0.5) +
         (temperature / reference_temperature)**(-5.0/2.0) * (
             0.01275 * np.exp(-2239.1 / temperature) / (frO + (frequency**2 / frO)) +
             0.1068 * np.exp(-3352.0 / temperature) / (frN + (frequency**2 / frN)) 

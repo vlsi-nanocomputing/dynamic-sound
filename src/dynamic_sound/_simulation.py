@@ -76,8 +76,8 @@ class Simulation:
                 wave_file.setframerate(microphone.sample_rate)
 
                 # air absorption filter
-                filter_len = 31
-                frequencies = np.linspace(0, microphone.sample_rate/2, num=32)
+                filter_len = 513
+                frequencies = np.linspace(0, microphone.sample_rate/2, num=512)
                 air_absorption_coefficients = attenuation_coefficients(
                     frequency=frequencies,
                     temperature=self.air.temperature + 273.15,
@@ -108,7 +108,6 @@ class Simulation:
 
                                 out_buffer[channel_index].appendleft(source.get_sample(time_emission) * attenuation_geom)
                                 out_samples[sample_index, channel_index] += air_fir_coefficients.dot(out_buffer[channel_index])
-                                #out_samples[sample_index, channel_index] = source.get_sample(time_emission) * attenuation_geom
                 
                 interleaved = (np.clip(out_samples, -1.0, 1.0) * np.iinfo(np.int32).max).astype(np.int32).reshape(-1)
                 wave_file.writeframes(struct.pack("<" + "i" * len(interleaved), *interleaved)) # int32 (little-endian)
