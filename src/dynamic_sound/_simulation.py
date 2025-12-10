@@ -6,7 +6,7 @@ from collections import deque
 from scipy.signal import firwin2, lfilter
 import struct
 
-from ._environment import Air
+from .environment import Air
 from .acoustics import attenuations
 from .acoustics.standards.ISO_9613_1_1993 import sound_speed, attenuation_coefficients, REFERENCE_TEMPERATURE, SOUND_SPEED
 from .path import Path
@@ -63,7 +63,7 @@ class Simulation:
         return None, None
 
     def run(self):
-        c = sound_speed(temperature=self.air.temperature, reference_temperature=20.0)
+        c = sound_speed(temperature=self.air.temperature+273.15)
 
         for microphone_path, microphone in self._microphones:
             dst_path = os.path.dirname(microphone.file_path)

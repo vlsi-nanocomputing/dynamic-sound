@@ -6,8 +6,8 @@ REFERENCE_PRESSURE = 101.325  # [kPa] = 1 atm
 TRIPLE_TEMPERATURE = 273.16  # [K] = 0.01 °C
 
 
-def sound_speed(temperature, reference_temperature=REFERENCE_TEMPERATURE):
-    return SOUND_SPEED * np.sqrt(temperature / reference_temperature)
+def sound_speed(temperature):
+    return SOUND_SPEED * np.sqrt(temperature / REFERENCE_TEMPERATURE)
 
 def saturation_pressure(temperature, reference_pressure=REFERENCE_PRESSURE, triple_temperature=TRIPLE_TEMPERATURE):  # (ISO 9613-1: B.2, B.3)
     return reference_pressure * 10.0**(-6.8346 * (triple_temperature / temperature)**(1.261) + 4.6151)
@@ -34,3 +34,7 @@ def attenuation_coefficients(frequency, temperature, relative_humidity, pressure
             0.1068 * np.exp(-3352.0 / temperature) / (frN + (frequency**2 / frN)) 
         )
     )
+
+if __name__ == "__main__":
+    print(sound_speed(273.15+20))
+

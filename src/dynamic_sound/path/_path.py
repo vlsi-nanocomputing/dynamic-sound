@@ -115,11 +115,9 @@ class Path:
         ax.scatter(pos[-1, 0], pos[-1, 1], pos[-1, 2], color='red', s=60, label='End', zorder=3)
         
         # Labels and aesthetics
-        ax.set_title("3D Path")
-        ax.set_xlabel("X")
-        ax.set_ylabel("Y")
-        ax.set_zlabel("Z")
-        ax.legend()
+        ax.set_xlabel("x")
+        ax.set_ylabel("y")
+        ax.set_zlabel("z")
         ax.grid(True)
 
         if legend:
@@ -164,10 +162,9 @@ class Path:
             ax.quiver(*origin, *y_dir, length=scale, normalize=True, color='g', linewidth=1)
             ax.quiver(*origin, *z_dir, length=scale, normalize=True, color='b', linewidth=1)
 
-        ax.set_xlabel("X")
-        ax.set_ylabel("Y")
-        ax.set_zlabel("Z")
-        ax.legend()
+        ax.set_xlabel("x")
+        ax.set_ylabel("y")
+        ax.set_zlabel("z")
         ax.grid(True)
         ax.set_box_aspect([1, 1, 1])
 

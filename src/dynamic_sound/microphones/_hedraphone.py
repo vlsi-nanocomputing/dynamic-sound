@@ -74,7 +74,7 @@ class Hedraphone(MicrophoneArray):
         
         positions = np.concatenate([pcb.mics for pcb in self.pcb], axis=1).T
         rotations = np.tile([1, 0, 0, 0], (len(positions), 1))
-        super().__init__(np.hstack((positions, rotations)), file_path, sample_rate, sample_width)
+        super().__init__(file_path, np.hstack((positions, rotations)), sample_rate, sample_width)
 
     def _generate_mics(self, num_mics, radius):
         mics = [(0.0, 0.0, 0.0)]
