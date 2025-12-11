@@ -9,7 +9,7 @@ import struct
 from .environment import Air
 from .acoustics import attenuations
 from .acoustics.standards.ISO_9613_1_1993 import sound_speed, attenuation_coefficients, REFERENCE_TEMPERATURE, SOUND_SPEED
-from .path import Path
+from .environment import Path
 from .sources import Source
 from .microphones import MicrophoneArray
 from scipy.spatial.transform import Rotation as R

@@ -19,7 +19,7 @@ DynamicSound Simulator is a modular Python library designed for generating **vir
   - Audio file source
 
 - **Environmental modeling**
-  - Source and microphone trajectories
+  - Source and microphone trajectories, 3D positions and rotations
   - Air absorption based on **ISO 9613-1**
   - Temperature, pressure, and humidity parameters
 
@@ -50,7 +50,7 @@ pip install dynamicsound
 
 ---
 
-## 🚀 Usage Example
+## 🎮 Usage Example
 
 ```python
 import dynamic_sound as ds
@@ -91,7 +91,7 @@ More examples available inside `examples` folder.
 
 ---
 
-# 🤝 How to contribute
+## 🤝 How to contribute
 
 Contributions are welcome!
 Please open an issue or submit a merge request following GitLab’s standard workflow.
@@ -102,6 +102,7 @@ Please open an issue or submit a merge request following GitLab’s standard wor
 git clone <repository_name>
 ```
 
+---
 
 ## 📂 Project structure
 
@@ -142,10 +143,12 @@ git clone <repository_name>
  |  └─📄test_simulation.py
  ├─📄.gitignore
  ├─📄.gitlab-ci.yml
+ ├─📄LICENSE.txt
  ├─📄pyproject.toml
  └─📄README.md
 ```
 
+---
 
 ## 🛠️ Development Installation
 
