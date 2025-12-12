@@ -1,5 +1,6 @@
 <img src="docs/_static/img/dynamicsound_logo_text.png" width="50%">
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17911934.svg)](https://doi.org/10.5281/zenodo.17911934)
 # DynamicSound Simulator
 
 DynamicSound Simulator is a modular Python library designed for generating **virtual acoustic scenes** with customizable **microphone configurations**, **sound sources**, and **environmental conditions**. It is intended for research, algorithm development, and testing in areas such as **beamforming**, **source localization**, **audio augmentation**, and **acoustic machine learning**.
