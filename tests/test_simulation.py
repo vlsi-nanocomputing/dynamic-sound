@@ -5,6 +5,7 @@ res_path = os.path.join("examples", "resources")
 microphone_sample_rate = 100
 source_sample_rate = 100
 
+
 def test_simulation():
     sim = ds.Simulation(temperature=20, pressure=1, relative_humidity=50)
     mic_path = ds.Path(file=os.path.join(res_path, "paths", "camera_path.csv"))

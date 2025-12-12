@@ -3,6 +3,7 @@ name = "dynamic-sound"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
+license = { file = "LICENSE.txt" }
 authors = [
     { name = "Luca Barbisan", email = "luca.barbisan@polito.it" }
 ]
