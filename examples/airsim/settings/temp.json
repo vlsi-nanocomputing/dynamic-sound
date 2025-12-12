@@ -1,0 +1,40 @@
+{
+  "SeeDocsAt": "https://github.com/Microsoft/AirSim/blob/master/docs/settings.md",
+  "SettingsVersion": 1.2,
+  "SimMode": "Multirotor",
+  "ViewMode": "FlyWithMe",
+  "EngineSound": false,
+  "LogMessagesVisible": false,
+  "SubWindows": [
+    {
+      "WindowID": 0,
+      "CameraName": "FixedCamera",
+      "External": true,
+      "Visible": true
+    }
+  ],
+  "ExternalCameras": {
+    "FixedCamera": {
+      "X": 0,
+      "Y": 0,
+      "Z": 0,
+      "Pitch": 0,
+      "Yaw": 0,
+      "Roll": 0,
+      "CaptureSettings": [
+        {
+          "ImageType": 0,
+          "Width": 800,
+          "Height": 800,
+          "FOV_Degrees": 120
+        }
+      ]
+    }
+  },
+  "Vehicles": {
+    "Drone": {
+      "VehicleType": "SimpleFlight",
+      "EnableCollisionPassthrogh": true
+    }
+  }
+}
