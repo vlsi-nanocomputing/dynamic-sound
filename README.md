@@ -4,6 +4,8 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17911934.svg)](https://doi.org/10.5281/zenodo.17911934)
 [![Static Badge](https://img.shields.io/badge/github-repository-blue?logo=github)](https://github.com/vlsi-nanocomputing/dynamic-sound)
+[![GitHub Release](https://img.shields.io/github/v/release/vlsi-nanocomputing/dynamic-sound?color=blue)
+](https://github.com/vlsi-nanocomputing/dynamic-sound)
 [![GitHub License](https://img.shields.io/github/license/vlsi-nanocomputing/dynamic-sound)](https://github.com/vlsi-nanocomputing/dynamic-sound)
 [![GitHub forks](https://img.shields.io/github/forks/vlsi-nanocomputing/dynamic-sound)](https://github.com/vlsi-nanocomputing/dynamic-sound)
 [![PyPI - Version](https://img.shields.io/pypi/v/dynamic-sound)](https://pypi.org/project/dynamic-sound)
