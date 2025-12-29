@@ -117,3 +117,7 @@ def test_path():
 
 if __name__ == "__main__":
     test_simulation()
+    test_simulation_2()
+    test_simulation_3()
+    test_simulation_4()
+    test_path()

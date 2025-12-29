@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="600"
+   height="100"
+   viewBox="0 0 158.75001 26.458334"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="logo.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="1.4770342"
+     inkscape:cx="236.2843"
+     inkscape:cy="202.43268"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer2" />
+  <defs
+     id="defs2">
+    <linearGradient
+       id="linearGradient1184"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop1182" />
+    </linearGradient>
+  </defs>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Text"
+     transform="translate(-69.010033,-87.245247)">
+    <rect
+       style="display:none;fill:none;stroke:#808080;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
+       id="rect3931"
+       width="132.29167"
+       height="21.166668"
+       x="92.954674"
+       y="90.023216"
+       inkscape:label="text box"
+       sodipodi:insensitive="true" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.1667px;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline;fill:#000000;fill-opacity:1;stroke-width:0.200025;stroke-dasharray:none"
+       x="94.582382"
+       y="105.9034"
+       id="text416"
+       inkscape:label="text"
+       sodipodi:insensitive="true"><tspan
+         sodipodi:role="line"
+         id="tspan414"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.1667px;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke-width:0.200025;stroke-dasharray:none"
+         x="94.582382"
+         y="105.9034">DynamicSound</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Logo"
+     transform="translate(-69.010033,-87.245247)">
+    <rect
+       style="display:none;fill:none;stroke:#808080;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
+       id="rect3931-6"
+       width="21.166668"
+       height="21.166668"
+       x="71.787086"
+       y="90.022285"
+       inkscape:label="logo box"
+       sodipodi:insensitive="true" />
+    <circle
+       style="fill:none;stroke:#ff9900;stroke-width:1.05833;stroke-dasharray:none;stroke-opacity:1"
+       id="path624-0-9"
+       cx="83.297531"
+       cy="101.53275"
+       r="8.9958334"
+       inkscape:label="circle_3"
+       sodipodi:insensitive="true" />
+    <circle
+       style="fill:none;stroke:#ff9900;stroke-width:1.05833;stroke-dasharray:none;stroke-opacity:1"
+       id="path624-0-9-7"
+       cx="80.651703"
+       cy="98.886909"
+       r="7.4083338"
+       inkscape:label="circle_2"
+       sodipodi:insensitive="true" />
+    <circle
+       style="fill:none;stroke:#ff9900;stroke-width:1.05833;stroke-dasharray:none;stroke-opacity:1"
+       id="path624-0-9-7-9"
+       cx="78.005867"
+       cy="96.241081"
+       r="5.8208337"
+       inkscape:label="circle_1"
+       sodipodi:insensitive="true" />
+  </g>
+</svg>

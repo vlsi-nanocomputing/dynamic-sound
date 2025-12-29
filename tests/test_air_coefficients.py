@@ -31,3 +31,6 @@ def test_air_coefficients():
                 print(f"{val*distance:10.2e} |", end="")
         
         print()
+
+if __name__ == "__main__":
+    test_air_coefficients()

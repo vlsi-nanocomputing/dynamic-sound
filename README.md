@@ -1,9 +1,18 @@
-<img src="docs/_static/img/dynamicsound_logo_text.png" width="50%">
+<h1 align="center">
+<img src="docs/_static/img/logo.svg" style='background-color: FFFFFF;' width="75%" alt="Not Found" onerror="this.src='https://raw.githubusercontent.com/vlsi-nanocomputing/dynamic-sound/refs/heads/main/docs/_static/img/dynamicsound_logo_text.png';">
+</h1>
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17911934.svg)](https://doi.org/10.5281/zenodo.17911934)
-# DynamicSound Simulator
+[![Static Badge](https://img.shields.io/badge/github-repository-blue?logo=github)](https://github.com/vlsi-nanocomputing/dynamic-sound)
+[![GitHub License](https://img.shields.io/github/license/vlsi-nanocomputing/dynamic-sound)](https://github.com/vlsi-nanocomputing/dynamic-sound)
+[![GitHub forks](https://img.shields.io/github/forks/vlsi-nanocomputing/dynamic-sound)](https://github.com/vlsi-nanocomputing/dynamic-sound)
+[![PyPI - Version](https://img.shields.io/pypi/v/dynamic-sound)](https://pypi.org/project/dynamic-sound)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/dynamic-sound)](https://pypi.org/project/dynamic-sound/)
 
-DynamicSound Simulator is a modular Python library designed for generating **virtual acoustic scenes** with customizable **microphone configurations**, **sound sources**, and **environmental conditions**. It is intended for research, algorithm development, and testing in areas such as **beamforming**, **source localization**, **audio augmentation**, and **acoustic machine learning**.
+
+DynamicSound is a modular Python library designed for generating **virtual acoustic scenes** with customizable **microphone configurations**, **sound sources**, and **environmental conditions**. It is intended for research, algorithm development, and testing in areas such as **beamforming**, **source localization**, **audio augmentation**, and **acoustic machine learning**.
+
+
 
 ---
 
@@ -26,7 +35,7 @@ DynamicSound Simulator is a modular Python library designed for generating **vir
 
 - **Signal path simulation**
   - Distance-based attenuation
-  - Image-source reflections
+  - Multiple sound sources simulation
   - Scenarios with dynamic movement
 
 ---
@@ -46,8 +55,9 @@ Where:
 
 ### From PyPI
 ```bash
-pip install dynamicsound
+pip install dynamic-sound[==<version>]
 ```
+example: `pip install dynamic-sound=1.0.0`
 
 ---
 
@@ -57,6 +67,7 @@ pip install dynamicsound
 import dynamic_sound as ds
 
 source_path = ds.Path([
+  # time / position(x,y,z) / quaternion(w,x,y,z)
     [0.0,  343, 3, 1,   1, 0, 0, 0],
     [10.0, -343, 3, 1,   1, 0, 0, 0]
 ])
@@ -67,13 +78,13 @@ microphone_path = ds.Path([
 
 # simulation environment
 sim = ds.Simulation(
-    temperature=20,
-    pressure=1,
-    relative_humidity=50
+    temperature=20,  # temperature [°C]
+    pressure=1,  # pressure [atm]
+    relative_humidity=50  # relative humidity [%]
 )
 
 # microphone
-mic_sample_rate = 48_000
+mic_sample_rate = 48_000  # Hertz [Hz]
 microphone = ds.microphones.Microphone("_tmp/sine_dynamic.wav", sample_rate=mic_sample_rate)
 sim.add_microphone(path=microphone_path, microphone=microphone)
 
@@ -95,7 +106,7 @@ More examples available inside `examples` folder.
 ## 🤝 How to contribute
 
 Contributions are welcome!
-Please open an issue or submit a merge request following GitLab’s standard workflow.
+Please open an issue or submit a merge request following Git’s standard workflow.
 
 
 ## Clone project
@@ -125,23 +136,18 @@ git clone <repository_name>
  │     |     └─📄ISO_9613_1_1993.py
  │     ├─📂environment/
  |     |  ├─📄__init__.py
- |     |  ├─📄_air.py
- |     |  └─📄_path.py
+ |     |  └─📄_*.py
  │     ├─📂microphones/
  |     |  ├─📄__init__.py
- |     |  ├─📄_hedraphones.py
- |     |  └─📄_microphones.py
+ |     |  └─📄_*.py
  │     ├─📂sources/
  |     |  ├─📄__init__.py
- |     |  ├─📄_audio_file.py
- |     |  ├─📄_sine_wave.py
- |     |  ├─📄_source.py
- |     |  └─📄_white_noise.py
+ |     |  └─📄_*.py
  │     ├─📄__init__.py
  │     ├─📄_simulation.py
  │     └─📄py.typed
  ├─📂tests\
- |  └─📄test_simulation.py
+ |  └─📄test_*.py
  ├─📄.gitignore
  ├─📄.gitlab-ci.yml
  ├─📄LICENSE.txt
@@ -168,7 +174,6 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 more details in the official [uv documentation](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer)
 
 ### Generate the Environment
-To install in editable/development mode:
 
 ```bash
 uv sync
@@ -196,6 +201,23 @@ Open one of the *.ipynb inside the examples folder and run it.
 
 ```bash
 uv run pytest --cov=src --cov-report=term-missing --cov-fail-under=80 --capture=no
+```
+
+---
+
+## 📈 Increment the version
+
+```bash
+uv version --bump patch
+```
+the options are `major`, `minor`, `patch`
+
+---
+
+## 📢 Pubblish on PyPI
+
+```bash
+uv publish --token UV_PUBLISH_TOKEN
 ```
 
 ---
