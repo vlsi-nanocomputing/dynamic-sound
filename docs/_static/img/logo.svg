@@ -25,14 +25,14 @@
      inkscape:document-units="px"
      showgrid="false"
      inkscape:zoom="1.4770342"
-     inkscape:cx="236.2843"
-     inkscape:cy="202.43268"
+     inkscape:cx="309.06529"
+     inkscape:cy="211.91114"
      inkscape:window-width="1920"
      inkscape:window-height="1009"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer2" />
+     inkscape:current-layer="svg5" />
   <defs
      id="defs2">
     <linearGradient
@@ -44,6 +44,14 @@
          id="stop1182" />
     </linearGradient>
   </defs>
+  <rect
+     style="display:none;fill:#000000;fill-opacity:0;stroke:#808080;stroke-width:0.264583"
+     id="rect1524"
+     width="158.75"
+     height="26.458334"
+     x="0.1322915"
+     y="0.1322915"
+     inkscape:label="background" />
   <g
      inkscape:groupmode="layer"
      id="layer2"
@@ -60,7 +68,7 @@
        sodipodi:insensitive="true" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.1667px;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline;fill:#000000;fill-opacity:1;stroke-width:0.200025;stroke-dasharray:none"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.1667px;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;display:inline;fill:#737373;fill-opacity:1;stroke-width:0.200025;stroke-dasharray:none"
        x="94.582382"
        y="105.9034"
        id="text416"
@@ -68,7 +76,7 @@
        sodipodi:insensitive="true"><tspan
          sodipodi:role="line"
          id="tspan414"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.1667px;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke-width:0.200025;stroke-dasharray:none"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.1667px;font-family:Calibri;-inkscape-font-specification:'Calibri, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#737373;fill-opacity:1;stroke-width:0.200025;stroke-dasharray:none"
          x="94.582382"
          y="105.9034">DynamicSound</tspan></text>
   </g>

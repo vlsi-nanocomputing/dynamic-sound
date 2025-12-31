@@ -1,8 +1,8 @@
 <h1 align="center">
-<img src="docs/_static/img/logo.svg" style='background-color: FFFFFF;' width="75%" alt="Not Found" onerror="this.src='https://raw.githubusercontent.com/vlsi-nanocomputing/dynamic-sound/refs/heads/main/docs/_static/img/dynamicsound_logo_text.png';">
+<img src="docs/_static/img/logo.svg" width="75%" alt="Not Found" onerror="this.src='https://raw.githubusercontent.com/vlsi-nanocomputing/dynamic-sound/refs/heads/main/docs/_static/img/dynamicsound_logo_text.png';">
 </h1>
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17911934.svg)](https://doi.org/10.5281/zenodo.17911934)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18105721.svg)](https://doi.org/10.5281/zenodo.18105721)
 [![Static Badge](https://img.shields.io/badge/github-repository-blue?logo=github)](https://github.com/vlsi-nanocomputing/dynamic-sound)
 [![GitHub Release](https://img.shields.io/github/v/release/vlsi-nanocomputing/dynamic-sound?color=blue)
 ](https://github.com/vlsi-nanocomputing/dynamic-sound)
