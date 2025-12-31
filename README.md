@@ -1,5 +1,5 @@
 <h1 align="center">
-<img src="docs/_static/img/logo.svg" width="75%" alt="Not Found" onerror="this.src='https://raw.githubusercontent.com/vlsi-nanocomputing/dynamic-sound/2856d86d75b4e1e138421c0cca21e51fab7d5670/docs/_static/img/logo.svg';">
+  <img alt="DynamicSound" width="75%" src="https://raw.githubusercontent.com/vlsi-nanocomputing/dynamic-sound/main/docs/_static/img/logo.svg" onerror="this.onerror=null; this.src='docs/_static/img/logo.svg'">
 </h1>
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18105721.svg)](https://doi.org/10.5281/zenodo.18105721)
