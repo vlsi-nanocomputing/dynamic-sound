@@ -1,6 +1,6 @@
 cff-version: 1.2.0
-message: "If you use this software or research, please cite it as below."
-title: "DynamicSound simulator for simulating moving sources and microphone arrays"
+message: "If you use this software, please cite the paper below."
+title: "DynamicSound"
 authors:
   - family-names: Barbisan
     given-names: Luca
@@ -9,19 +9,21 @@ authors:
   - family-names: Riente
     given-names: Fabrizio
 year: 2026
-identifiers:
-  - type: arxiv
-    value: "2601.15433"
 repository-code: "https://github.com/vlsi-nanocomputing/dynamic-sound"
-url: "https://arxiv.org/abs/2601.15433"
-abstract: >
-  DynamicSound is a simulator designed for modeling acoustic scenarios
-  involving moving sound sources and microphone arrays, enabling research
-  in spatial audio and acoustic signal processing.
-keywords:
-  - acoustic simulation
-  - spatial audio
-  - microphone arrays
-  - moving sound sources
-  - signal processing
-license: "Apache-2.0"
+license: Apache-2.0
+
+preferred-citation:
+  type: article
+  title: "DynamicSound simulator for simulating moving sources and microphone arrays"
+  authors:
+    - family-names: Barbisan
+      given-names: Luca
+    - family-names: Levorato
+      given-names: Marco
+    - family-names: Riente
+      given-names: Fabrizio
+  year: 2026
+  identifiers:
+    - type: arxiv
+      value: "2601.15433"
+  url: "https://arxiv.org/abs/2601.15433"
