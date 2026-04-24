@@ -38,3 +38,15 @@ def attenuation_coefficients(frequency, temperature, relative_humidity, pressure
 if __name__ == "__main__":
     print(sound_speed(273.15+20))
 
+__all__ = [
+    "SOUND_SPEED",
+    "REFERENCE_TEMPERATURE",
+    "REFERENCE_PRESSURE",
+    "TRIPLE_TEMPERATURE",
+    "sound_speed",
+    "saturation_pressure",
+    "molar_concentration_water_vapour",
+    "relaxation_frequency_oxygen",
+    "relaxation_frequency_nitrogen",
+    "attenuation_coefficients",
+]
