@@ -7,3 +7,7 @@ def geometric(distance:float) -> float:
 def material_reflection(coeff):
     return 1.0
 
+__all__ = [
+    "geometric",
+    "material_reflection"
+]
