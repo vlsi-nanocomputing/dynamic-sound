@@ -15,15 +15,17 @@ test:
     - if: '$CI_COMMIT_BRANCH == "develop"'
     - if: '$CI_COMMIT_BRANCH == "main"'
     - if: '$CI_COMMIT_BRANCH =~ /^release.*/'
-    - when: never
+    - if: '$CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+.*$/'
 
 pulish:
   stage: publish
+  needs: ["test"]
   tags: ["python3.10"]
   script:
     - python3.10 -m venv venv
     - source venv/bin/activate
     - pip3.10 install uv
+    - uv build
     - uv publish --token "$PYPI_TOKEN"
   rules:
     - if: '$CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+.*$/'
