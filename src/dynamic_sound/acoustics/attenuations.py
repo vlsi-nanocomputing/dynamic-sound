@@ -34,9 +34,9 @@ def directivity(angle_rad, directivity):
     elif directivity == DirectivityType.Cardioid:
         return 0.5 * (1 + np.cos(angle_rad))
     elif directivity == DirectivityType.Hypercardioid:
-        return 0.37 + 0.63 * np.cos(angle_rad)
+        return np.abs(0.37 + 0.63 * np.cos(angle_rad))
     elif directivity == DirectivityType.Supercardioid:
-        return 0.25 + 0.75 * np.cos(angle_rad)
+        return np.abs(0.25 + 0.75 * np.cos(angle_rad))
     elif directivity == DirectivityType.Figure8:
         return np.abs(np.cos(angle_rad))
     else:
