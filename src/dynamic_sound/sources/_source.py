@@ -1,10 +1,12 @@
 from abc import ABC, abstractmethod
+from dynamic_sound.acoustics.attenuations import DirectivityType
 
 class Source(ABC):
 
     @abstractmethod
-    def __init__(self):
+    def __init__(self, directivity:DirectivityType=DirectivityType.Omnidirectional):
         super().__init__()
+        self.directivity = directivity
 
     @abstractmethod
     def get_sample(self, time:float):

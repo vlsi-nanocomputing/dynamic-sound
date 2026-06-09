@@ -56,9 +56,8 @@ class Path:
 
                     # Interpolate
                     interp_rot = slerp([alpha])[0]
-                    rotation = interp_rot.as_quat(scalar_first=True)
-
-                    return position, rotation
+                    
+                    return position, interp_rot.as_quat(scalar_first=True)
         
         # If time not in the range
         return None, None
