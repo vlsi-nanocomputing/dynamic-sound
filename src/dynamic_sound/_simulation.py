@@ -99,8 +99,8 @@ class Simulation:
                 wave_file.setframerate(microphone.sample_rate)
 
                 # air absorption filter
-                filter_len = 513
-                frequencies = np.linspace(0, microphone.sample_rate/2, num=512)
+                filter_len = 33
+                frequencies = np.linspace(0, microphone.sample_rate/2, num=32)  #TODO: num=512)
                 air_absorption_coefficients = attenuation_coefficients(
                     frequency=frequencies,
                     temperature=self.air.temperature + 273.15,

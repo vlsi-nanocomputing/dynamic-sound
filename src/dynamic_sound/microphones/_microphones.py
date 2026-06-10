@@ -2,7 +2,7 @@ import numpy as np
 from dynamic_sound.acoustics.attenuations import DirectivityType
 
 class MicrophoneArray:
-    def __init__(self, file_path:str, positions:list, sample_rate:int=48_000, sample_width=4, directivity:DirectivityType=DirectivityType.Omnidirectional):
+    def __init__(self, file_path:str, positions:list, sample_rate:int=48_000, sample_width=4, directivity:DirectivityType=DirectivityType.OMNIDIRECTIONAL):
         """Initializes a microphone array with the given parameters.
 
         Args:

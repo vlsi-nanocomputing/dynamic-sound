@@ -18,26 +18,26 @@ def material_reflection(coeff):
     return 1.0
 
 class DirectivityType:
-    Omnidirectional = 1
-    Subcardioid = 2
-    Cardioid = 3
-    Hypercardioid = 4
-    Supercardioid = 5
-    Figure8 = 6
+    OMNIDIRECTIONAL = 1
+    SUBCARDIOID = 2
+    CARDIOID = 3
+    HYPERCARDBOID = 4
+    SUPERCARDIOID = 5
+    FIGURE8 = 6
 
 
 def directivity(angle_rad, directivity):
-    if directivity == DirectivityType.Omnidirectional:
+    if directivity == DirectivityType.OMNIDIRECTIONAL:
         return 1.0
-    elif directivity == DirectivityType.Subcardioid:
+    elif directivity == DirectivityType.SUBCARDIOID:
         return 0.75 + 0.25 * np.cos(angle_rad)
-    elif directivity == DirectivityType.Cardioid:
+    elif directivity == DirectivityType.CARDIOID:
         return 0.5 * (1 + np.cos(angle_rad))
-    elif directivity == DirectivityType.Hypercardioid:
+    elif directivity == DirectivityType.HYPERCARDBOID:
         return np.abs(0.37 + 0.63 * np.cos(angle_rad))
-    elif directivity == DirectivityType.Supercardioid:
+    elif directivity == DirectivityType.SUPERCARDIOID:
         return np.abs(0.25 + 0.75 * np.cos(angle_rad))
-    elif directivity == DirectivityType.Figure8:
+    elif directivity == DirectivityType.FIGURE8:
         return np.abs(np.cos(angle_rad))
     else:
         raise ValueError(f"Unknown directivity type: {directivity}")
