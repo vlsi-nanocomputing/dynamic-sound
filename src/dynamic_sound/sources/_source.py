@@ -1,10 +1,15 @@
 from abc import ABC, abstractmethod
 from dynamic_sound.acoustics.attenuations import DirectivityType
 
+class InterpolationType:
+    NONE = 0
+    LINEAR = 1
+    SINC = 2
+
 class Source(ABC):
 
     @abstractmethod
-    def __init__(self, directivity:DirectivityType=DirectivityType.Omnidirectional):
+    def __init__(self, directivity:DirectivityType=DirectivityType.OMNIDIRECTIONAL):
         super().__init__()
         self.directivity = directivity
 
