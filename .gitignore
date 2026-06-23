@@ -54,7 +54,8 @@ coverage.xml
 .pytest_cache/
 cover/
 
-# Test temp files
+# Test temp folders and files
+_tmp.py
 _tmp/
 
 # Translations
