@@ -25,6 +25,23 @@ class DirectivityType:
     SUPERCARDIOID = 5
     FIGURE8 = 6
 
+    @staticmethod
+    def name(directivity):
+        if directivity == DirectivityType.OMNIDIRECTIONAL:
+            return "omnidirectional"
+        elif directivity == DirectivityType.SUBCARDIOID:
+            return "subcardioid"
+        elif directivity == DirectivityType.CARDIOID:
+            return "cardioid"
+        elif directivity == DirectivityType.HYPERCARDBOID:
+            return "hypercardboid"
+        elif directivity == DirectivityType.SUPERCARDIOID:
+            return "supercardioid"
+        elif directivity == DirectivityType.FIGURE8:
+            return "figure8"
+        else:
+            raise ValueError(f"Unknown directivity type: {directivity}")
+
 
 def directivity(angle_rad, directivity):
     if directivity == DirectivityType.OMNIDIRECTIONAL:

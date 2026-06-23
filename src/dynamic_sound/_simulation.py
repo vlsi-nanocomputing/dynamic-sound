@@ -24,8 +24,14 @@ class Simulation:
     def add_microphone(self, path:Path, microphone: MicrophoneArray):
         self._microphones.append((path, microphone))
 
+    def remove_microphones(self):
+        self._microphones = []
+
     def add_source(self, path:Path, source:Source):
         self._sources.append((path, source))
+    
+    def remove_sources(self):
+        self._sources = []
 
     @staticmethod
     def _incidence_angle_rad(p1, p2, r1):
@@ -112,7 +118,7 @@ class Simulation:
                 out_samples = np.zeros((int(microphone.sample_rate * microphone_path.duration), microphone.num_channels))
 
                 for sample_index, time_receiver in tqdm([(index, index/microphone.sample_rate) for index in range(int(microphone.sample_rate * microphone_path.duration))]):
-                    position_array, rotation_array = microphone_path.get_position(time_receiver)
+                    position_array, rotation_array = microphone_path.get_position(time_receiver + microphone_path.start_time)
 
                     for channel_index, microphone_position in enumerate(microphone.get_microphones()):
                         for source_path, source in self._sources:

@@ -1,12 +1,15 @@
 
+from dynamic_sound.acoustics.attenuations import DirectivityType
+
 from ._source import Source, InterpolationType
 
 import librosa
 import numpy as np
 
 class AudioFile(Source):
-    def __init__(self, filename, sample_rate=None, gain_db=0.0, loop=True, interpolation:int=InterpolationType.LINEAR):
-        super().__init__()
+    def __init__(self, filename, sample_rate=None, gain_db=0.0, loop=True,
+                 interpolation:int=InterpolationType.LINEAR, directivity:DirectivityType=DirectivityType.OMNIDIRECTIONAL):
+        super().__init__(directivity=directivity)
         self.signal, self.sample_rate = librosa.load(filename, sr=sample_rate, mono=True)
         self.loop = loop
         self.length = len(self.signal)

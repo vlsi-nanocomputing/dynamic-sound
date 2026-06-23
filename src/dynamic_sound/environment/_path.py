@@ -7,10 +7,12 @@ class Path:
     def __init__(self, positions=None, *, file=None):
         self.positions = None
         self.duration = 0.0
+        self.start_time = 0.0
 
         if positions is not None:
             self.positions = np.array(positions, dtype=np.float64)
             self.duration = self.positions[-1, 0] - self.positions[0, 0]
+            self.start_time = self.positions[0, 0]
         
         if file is not None:
             self.load_path(file)
@@ -22,7 +24,8 @@ class Path:
     def load_path(self, file_path):
         self.positions = np.genfromtxt(file_path, delimiter=',', dtype=np.float64)
         self.duration = self.positions[-1][0] - self.positions[0][0]
-    
+        self.start_time = self.positions[0][0]
+
     def get_position(self, time):
         # Ensure time is within range
         if self.positions[0, 0] <= time < self.positions[-1, 0]:
