@@ -2,6 +2,7 @@ from ._source import Source, InterpolationType
 from ._white_noise import WhiteNoise
 from ._sine_wave import SineWave
 from ._audio_file import AudioFile
+from ._audio_signal import AudioSignal
 from dynamic_sound.acoustics.attenuations import DirectivityType
 
 __all__ = [
@@ -10,5 +11,6 @@ __all__ = [
     "InterpolationType",
     "WhiteNoise",
     "SineWave",
-    "AudioFile"
+    "AudioFile",
+    "AudioSignal"
 ]
