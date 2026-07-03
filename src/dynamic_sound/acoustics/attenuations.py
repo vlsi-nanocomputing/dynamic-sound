@@ -72,8 +72,8 @@ def directivity(angle_rad, directivity):
         publisher={EDP Sciences}
         }
         """
-        angle_deg = np.rad2deg(angle_rad)
-        return -0.0011 * angle_deg**2 + 0.194 * np.abs(angle_deg) - 4.9
+        angle_deg = (np.rad2deg(angle_rad) % 180) - 90
+        return 10**((-0.0011 * angle_deg**2 + 0.194 * np.abs(angle_deg) - 4.9) / 20)
     else:
         raise ValueError(f"Unknown directivity type: {directivity}")
 
