@@ -117,8 +117,8 @@ class Simulation:
                 out_buffer = [deque(np.zeros(filter_len), maxlen=filter_len) for _ in range(microphone.num_channels)]
                 out_samples = np.zeros((int(microphone.sample_rate * microphone_path.duration), microphone.num_channels))
 
-                for sample_index, time_receiver in tqdm([(index, index/microphone.sample_rate) for index in range(int(microphone.sample_rate * microphone_path.duration))]):
-                    position_array, rotation_array = microphone_path.get_position(time_receiver + microphone_path.start_time)
+                for sample_index, time_receiver in tqdm([(index, (index/microphone.sample_rate)+ microphone_path.start_time) for index in range(int(microphone.sample_rate * microphone_path.duration))]):
+                    position_array, rotation_array = microphone_path.get_position(time_receiver)
 
                     for channel_index, microphone_position in enumerate(microphone.get_microphones()):
                         for source_path, source in self._sources:
@@ -126,7 +126,12 @@ class Simulation:
                             rotation_receiver = R.from_quat(rotation_array, scalar_first=True)
                             position_receiver = position_array + rotation_receiver.apply(microphone_position[0:3])
 
-                            time_emission, position_emission, rotation_emission = self._compute_emission(position_receiver=position_receiver, time_receiver=time_receiver, source_path=source_path, c=c)
+                            time_emission, position_emission, rotation_emission = self._compute_emission(
+                                position_receiver=position_receiver,
+                                time_receiver=time_receiver,
+                                source_path=source_path,
+                                c=c
+                            )
                             
                             if time_emission is not None:
 

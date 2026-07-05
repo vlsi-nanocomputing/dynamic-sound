@@ -6,12 +6,12 @@ from ._source import Source, InterpolationType
 import librosa
 import numpy as np
 
-class Drone(Source):
-    def __init__(self, filename, sample_rate=None, gain_db=0.0, loop=True,
-                 interpolation:int=InterpolationType.LINEAR,
-                 directivity:DirectivityType=DirectivityType.QUADCOPTER):
+class AudioSignal(Source):
+    def __init__(self, signal, sample_rate=48_000, gain_db=0.0, loop=True,
+                 interpolation:int=InterpolationType.LINEAR, directivity:DirectivityType=DirectivityType.OMNIDIRECTIONAL):
         super().__init__(directivity=directivity)
-        self.signal, self.sample_rate = librosa.load(filename, sr=sample_rate, mono=True)
+        self.signal = signal
+        self.sample_rate = sample_rate
         self.loop = loop
         self.length = len(self.signal)
         if gain_db != 0.0:

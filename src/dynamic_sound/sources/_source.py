@@ -6,6 +6,17 @@ class InterpolationType:
     LINEAR = 1
     SINC = 2
 
+    @staticmethod
+    def name(interpolation):
+        if interpolation == InterpolationType.NONE:
+            return "none"
+        elif interpolation == InterpolationType.LINEAR:
+            return "linear"
+        elif interpolation == InterpolationType.SINC:
+            return "sinc"
+        else:
+            raise ValueError(f"Unknown interpolation type: {interpolation}")
+
 class Source(ABC):
 
     @abstractmethod

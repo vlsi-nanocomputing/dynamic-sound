@@ -28,13 +28,14 @@ class MicrophoneArray:
         return self.positions
 
 class Microphone(MicrophoneArray):
-    def __init__(self, file_path:str, sample_rate:int=48_000, sample_width=4, directivity:int=None):
+    def __init__(self, file_path:str, sample_rate:int=48_000, sample_width=4, directivity:DirectivityType=DirectivityType.OMNIDIRECTIONAL):
         """\Initializes a single microphone with the given parameters.
 
         Args:
             file_path (str): The path to the audio file will be created.
             sample_rate (int, optional): The sample rate of the audio file. Defaults to 48_000.
             sample_width (int, optional): The width of each sample in bytes. Defaults to 4.
+            directivity (int|list, optional): The directivity type(s) of the microphone.
         """
         position = [[0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0], ]
         super().__init__(file_path=file_path,
