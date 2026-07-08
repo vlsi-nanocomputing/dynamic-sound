@@ -50,16 +50,16 @@ display_windowed = True # True will launch AirSim as a window (recommended) rath
 display_animals = False # True will have animals running around map
 self_stabilize = True # True will run custom script to stabilize drone after commands, otherwise can spin out of control -- 
 mode_control = Modes.DURATION # how to move drone between points, changes stability (DURATION recommended)
-drone_speed = 5 # average linear speed drone will move -- in m/s (recommend 2 for stability)
+drone_speed = 4 # average linear speed drone will move -- in m/s (recommend 2 for stability)
 positions_list = [ # list of positions for drone to sequentially visit, [x, y, z] in drone coordinates
-    [3, 3, 0],
-    [10, 10, -25],
-    [8, -8, -20],
+    [3, 2, 0],
+    [3, 10, -15],
+    [3, -10, -15],
     [3, -5, -2],
     [1, 0, -1],
     [3, 5, -2],
-    [8, 8, -1],
-    [10, -8, -1],
+    [8, 6, -1],
+    [8, -6, -1],
     [3, -3, 0]
 ] # drone coordinates: +x is forward facing from initial drone position, +y is right, +z is downwards
 start_position = positions_list[0] # will teleport drone to this position before starting trajectory
@@ -84,7 +84,7 @@ camera_name = "FixedCamera"
     # 'bottom_center' or '3'
     # 'back_center' or '4'
 
-frame_rate =  5 # frames per second to capture data at during trajectory movement higher than 8 are unstable 
+frame_rate = 5 # frames per second to capture data at during trajectory movement higher than 8 are unstable 
 collection_time = 30 # number of seconds to collect data for 
 smile_for_the_camera = 0 # number of seconds to freeze screen at each frame for debugging/demo purposes -- you can set this to zero for actual data collection
 
@@ -191,7 +191,15 @@ try:
     
     # issue command to move drone on path 
     path = [airsim.Vector3r(*position) for position in positions_list]
-    move_future = client.moveOnPathAsync(path, velocity=drone_speed) # new thread, continue with code while this executes
+    move_future = client.moveOnPathAsync(
+        path=path,
+        velocity=drone_speed,
+        timeout_sec=60,
+        drivetrain=airsim.DrivetrainType.MaxDegreeOfFreedom,
+        lookahead=1,
+        adaptive_lookahead=1
+    ) # new thread, continue with code while this executes
+
     #client.moveOnPathAsync(path, velocity=drone_speed).join() # join will not continue code until this thread is done
     # capture data at given frame rate while drone is moving 
     n_frames = collection_time * frame_rate
