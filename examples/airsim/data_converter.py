@@ -6,10 +6,11 @@ from tqdm import tqdm
 from scipy.spatial.transform import Rotation as R
 
 
-def data_converter(data_dir):
+def data_converter(data_dir, dst_folder=None):
     frames_path = os.path.join(data_dir, 'frames.p')
     frames = pickle.load(open(frames_path, 'rb'))
-    dst_folder = os.path.join(data_dir, "converted")
+    if dst_folder is None:
+        dst_folder = os.path.join(data_dir, "converted")
     os.makedirs(dst_folder, exist_ok=True)
     print(f"destination folder: {dst_folder}")
 
