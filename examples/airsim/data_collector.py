@@ -16,6 +16,10 @@ from pprint import pprint
 class Maps(Enum):
     BLOCKS = './maps/LinuxBlocks1.8.1/LinuxNoEditor/Blocks.sh' # simple shapes and textures
     AIRSIMNH = './maps/AirSimNH/LinuxNoEditor/AirSimNH.sh' # realistic objects such as trees, houses, cars
+    AFRICA = './maps/Africa_Savannah/LinuxNoEditor/Africa_001.sh'
+    BANDO = './maps/AbandonedPark/LinuxNoEditor/AbandonedPark.sh'
+    MOUNTAINS = './maps/LandscapeMountains/LinuxNoEditor/LandscapeMountains.sh'
+    ZHANGJIAJIE = './maps/ZhangJiajie/LinuxNoEditor/ZhangJiajie.sh'
 class Defaults(Enum):
     DEFAULT = './settings/default.json' # basic multirotor quad copter settings
 class Modes(Enum):
@@ -36,12 +40,10 @@ class Camera(Enum):
     GLOBAL = 2
 
 
-
-
 ## ******** USER PARAMETERS ******** 
 initial_locals = locals().copy() # exclude above local variables from parameter list
 data_dir = 'data/run1/' # writes data to this folder path (WARNING: will overwrite be careful)
-airsim_map = Maps.BLOCKS # airsim map to launch and run in 
+airsim_map = Maps.MOUNTAINS # airsim map to launch and run in 
 release_path = airsim_map.value
 default_settings = Defaults.DEFAULT
 base_settings_path = default_settings.value # relative path to initial default settings file
@@ -50,18 +52,15 @@ display_windowed = True # True will launch AirSim as a window (recommended) rath
 display_animals = False # True will have animals running around map
 self_stabilize = True # True will run custom script to stabilize drone after commands, otherwise can spin out of control -- 
 mode_control = Modes.DURATION # how to move drone between points, changes stability (DURATION recommended)
-drone_speed = 4 # average linear speed drone will move -- in m/s (recommend 2 for stability)
+drone_speed = 8 # average linear speed drone will move -- in m/s (recommend 2 for stability)
 positions_list = [ # list of positions for drone to sequentially visit, [x, y, z] in drone coordinates
-    [3, 2, 0],
-    [3, 10, -15],
-    [3, -10, -15],
-    [3, -5, -2],
-    [1, 0, -1],
-    [3, 5, -2],
-    [8, 6, -1],
-    [8, -6, -1],
-    [3, -3, 0]
+    [7, -8, -25],
+    [8, 6, -10],
+    [9, 7, -9],
+    [4, -3, -3],
+    [3, 3, -1]
 ] # drone coordinates: +x is forward facing from initial drone position, +y is right, +z is downwards
+
 start_position = positions_list[0] # will teleport drone to this position before starting trajectory
 data_types = [ # what type of data to collect at each frame
     Data.TIMESTAMP,
@@ -85,7 +84,7 @@ camera_name = "FixedCamera"
     # 'back_center' or '4'
 
 frame_rate = 5 # frames per second to capture data at during trajectory movement higher than 8 are unstable 
-collection_time = 30 # number of seconds to collect data for 
+collection_time = 10 # number of seconds to collect data for 
 smile_for_the_camera = 0 # number of seconds to freeze screen at each frame for debugging/demo purposes -- you can set this to zero for actual data collection
 
 # save above parameters to write to file for future reference
@@ -306,6 +305,9 @@ try:
     # write frames data
     frames_path = os.path.join(data_dir, 'frames.p')
     pickle.dump(frames, open(frames_path, 'wb'))
+    #write settings file used for this run
+    settings_path = os.path.join(data_dir, 'settings.json')
+    json.dump(settings, open(settings_path, 'w'), indent=2)
     
     # wait for the trajectory to finish
     move_future.join()

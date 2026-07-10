@@ -29,7 +29,7 @@ class MicrophoneArray:
 
 class Microphone(MicrophoneArray):
     def __init__(self, file_path:str, sample_rate:int=48_000, sample_width=4, directivity:DirectivityType=DirectivityType.OMNIDIRECTIONAL):
-        """\Initializes a single microphone with the given parameters.
+        """Initializes a single microphone with the given parameters.
 
         Args:
             file_path (str): The path to the audio file will be created.
