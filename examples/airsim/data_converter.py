@@ -65,6 +65,114 @@ def data_converter(data_dir, dst_folder=None):
     np.savetxt(os.path.join(dst_folder, "camera_path.csv"), data, delimiter=",")
 
 
+
+def build_airsim_equirect_map(
+        src_w=820,
+        src_h=400,
+        out_w=820,
+        out_h=400,
+        hfov_deg=128,
+        vfov_deg=90,
+        pitch_deg=45):
+
+    hfov = np.deg2rad(hfov_deg)
+    vfov = np.deg2rad(vfov_deg)
+    pitch = np.deg2rad(pitch_deg)
+
+    fx = src_w / (2*np.tan(hfov/2))
+    fy = src_h / (2*np.tan(vfov/2))
+
+    cx = src_w/2
+    cy = src_h/2
+
+
+    # output equirettangolare
+    az = np.linspace(
+        np.deg2rad(-64),
+        np.deg2rad(64),
+        out_w
+    )
+
+    el = np.linspace(
+        np.deg2rad(90),
+        np.deg2rad(0),
+        out_h
+    )
+
+    AZ,EL=np.meshgrid(az,el)
+
+
+    # raggio mondo
+    dx=np.cos(EL)*np.cos(AZ)
+    dy=np.cos(EL)*np.sin(AZ)
+    dz=np.sin(EL)
+
+
+    # rotazione inversa del pitch
+    c=np.cos(-pitch)
+    s=np.sin(-pitch)
+
+    X = c*dx - s*dz
+    Y = dy
+    Z = s*dx + c*dz
+
+
+    # proiezione pinhole
+    map_x = fx*(Y/X)+cx
+    map_y = cy - fy*(Z/X)
+
+
+    # fuori immagine
+    invalid=(
+        (map_x<0) |
+        (map_x>=src_w) |
+        (map_y<0) |
+        (map_y>=src_h)
+    )
+
+    map_x=map_x.astype(np.float32)
+    map_y=map_y.astype(np.float32)
+
+    map_x[invalid]=-1
+    map_y[invalid]=-1
+
+    return map_x, map_y, invalid
+
+def perspective_to_equirectangular(
+        src_img,
+        src_w=820,
+        src_h=400,
+        out_w=820,
+        out_h=400,
+        hfov_deg=128.0,
+        vfov_deg=90.0,
+        pitch_deg=45.0,
+        interpolation=None,
+        border_mode=None):
+    import cv2
+
+    if interpolation is None:
+        interpolation = cv2.INTER_LINEAR
+    if border_mode is None:
+        border_mode = cv2.BORDER_CONSTANT
+
+    map_x, map_y, invalid = build_airsim_equirect_map(
+        src_w=src_w,
+        src_h=src_h,
+        out_w=out_w,
+        out_h=out_h,
+        hfov_deg=hfov_deg,
+        vfov_deg=vfov_deg,
+        pitch_deg=pitch_deg
+    )
+
+    dst_img = cv2.remap(src_img, map_x, map_y, interpolation=interpolation, borderMode=border_mode)
+    
+    return dst_img, invalid
+
+
+
+
 if __name__ == "__main__":
     import sys
 
