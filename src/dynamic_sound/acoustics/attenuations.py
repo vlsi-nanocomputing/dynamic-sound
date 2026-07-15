@@ -35,7 +35,7 @@ class DirectivityType:
         elif directivity == DirectivityType.CARDIOID:
             return "cardioid"
         elif directivity == DirectivityType.HYPERCARDBOID:
-            return "hypercardboid"
+            return "hypercardioid"
         elif directivity == DirectivityType.SUPERCARDIOID:
             return "supercardioid"
         elif directivity == DirectivityType.FIGURE8:

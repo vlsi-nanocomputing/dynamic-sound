@@ -137,8 +137,8 @@ class Simulation:
 
                                 distance = np.linalg.norm(position_receiver - position_emission)
 
-                                emitter_angle = Simulation._incidence_angle_rad(p1=position_emission, p2=position_receiver, r1=rotation_emission)
-                                receiver_angle = Simulation._incidence_angle_rad(p1=position_receiver, p2=position_emission, r1=rotation_receiver)
+                                emitter_angle = self._incidence_angle_rad(p1=position_emission, p2=position_receiver, r1=rotation_emission)
+                                receiver_angle = self._incidence_angle_rad(p1=position_receiver, p2=position_emission, r1=rotation_receiver)
 
                                 attenuation_geom = attenuations.geometric(distance)
                                 attennuation_dir_emitter = attenuations.directivity(emitter_angle, source.directivity)
