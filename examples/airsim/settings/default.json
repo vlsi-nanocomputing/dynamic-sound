@@ -23,15 +23,15 @@
       "X": 0,
       "Y": 0,
       "Z": 0,
-      "Pitch": 0,
+      "Pitch": 45,
       "Yaw": 0,
       "Roll": 0,
       "CaptureSettings": [
         {
           "ImageType": 0,
-          "Width": 800,
-          "Height": 800,
-          "FOV_Degrees": 120
+          "Width": 820,
+          "Height": 400,
+          "FOV_Degrees": 128
         }
       ]
     }

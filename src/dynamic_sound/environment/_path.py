@@ -7,10 +7,12 @@ class Path:
     def __init__(self, positions=None, *, file=None):
         self.positions = None
         self.duration = 0.0
+        self.start_time = 0.0
 
         if positions is not None:
             self.positions = np.array(positions, dtype=np.float64)
             self.duration = self.positions[-1, 0] - self.positions[0, 0]
+            self.start_time = self.positions[0, 0]
         
         if file is not None:
             self.load_path(file)
@@ -22,7 +24,8 @@ class Path:
     def load_path(self, file_path):
         self.positions = np.genfromtxt(file_path, delimiter=',', dtype=np.float64)
         self.duration = self.positions[-1][0] - self.positions[0][0]
-    
+        self.start_time = self.positions[0][0]
+
     def get_position(self, time):
         # Ensure time is within range
         if self.positions[0, 0] <= time < self.positions[-1, 0]:
@@ -56,9 +59,8 @@ class Path:
 
                     # Interpolate
                     interp_rot = slerp([alpha])[0]
-                    rotation = interp_rot.as_quat(scalar_first=True)
-
-                    return position, rotation
+                    
+                    return position, interp_rot.as_quat(scalar_first=True)
         
         # If time not in the range
         return None, None
@@ -67,6 +69,7 @@ class Path:
     def interpolate_path(self, num_points=50):
         # Split input
         t = self.positions[:, 0]
+        kind = "cubic" if len(t) >= 4 else "linear"
         pos = self.positions[:, 1:4]
         quat = self.positions[:, 4:8]
 
@@ -76,7 +79,7 @@ class Path:
         # --- Position interpolation ---
         interp_pos = np.zeros((num_points, 3))
         for i in range(3):
-            f = interp1d(t, pos[:, i], kind='cubic')
+            f = interp1d(t, pos[:, i], kind=kind)
             interp_pos[:, i] = f(t_new)
 
         # --- Quaternion interpolation ---

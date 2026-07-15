@@ -2,7 +2,7 @@ stages:
   - test
   - publish
 
-test:
+unit_tests:
   stage: test
   tags: ["python3.10"]
   script:
@@ -10,16 +10,26 @@ test:
     - source venv/bin/activate
     - pip3.10 install -e .
     - pip3.10 install pytest pytest-cov
-    - python3.10 -m pytest --cov=src --cov-report=term-missing --cov-fail-under=80 --capture=no
+    - python3.10 -m pytest tests/unit --cov=src --cov-report=term-missing --cov-fail-under=85
+
+integration_test:
+  stage: test
+  tags: ["python3.10"]
+  script:
+    - python3.10 -m venv venv
+    - source venv/bin/activate
+    - pip3.10 install -e .
+    - pip3.10 install pytest pytest-cov
+    - python3.10 -m pytest tests/integration --capture=no
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
     - if: '$CI_COMMIT_BRANCH == "main"'
     - if: '$CI_COMMIT_BRANCH =~ /^release.*/'
     - if: '$CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+.*$/'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
 
-pulish:
+publish:
   stage: publish
-  needs: ["test"]
   tags: ["python3.10"]
   script:
     - python3.10 -m venv venv

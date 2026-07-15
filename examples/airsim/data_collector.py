@@ -14,8 +14,12 @@ from pprint import pprint
 
 ## ******** ENUMERATED OBJECTS TO SELECT FROM BELOW ******** 
 class Maps(Enum):
-    BLOCKS = './maps/Blocks/LinuxBlocks1.8.1/LinuxNoEditor/Blocks.sh' # simple shapes and textures
+    BLOCKS = './maps/LinuxBlocks1.8.1/LinuxNoEditor/Blocks.sh' # simple shapes and textures
     AIRSIMNH = './maps/AirSimNH/LinuxNoEditor/AirSimNH.sh' # realistic objects such as trees, houses, cars
+    AFRICA = './maps/Africa_Savannah/LinuxNoEditor/Africa_001.sh'
+    BANDO = './maps/AbandonedPark/LinuxNoEditor/AbandonedPark.sh'
+    MOUNTAINS = './maps/LandscapeMountains/LinuxNoEditor/LandscapeMountains.sh'
+    ZHANGJIAJIE = './maps/ZhangJiajie/LinuxNoEditor/ZhangJiajie.sh'
 class Defaults(Enum):
     DEFAULT = './settings/default.json' # basic multirotor quad copter settings
 class Modes(Enum):
@@ -36,12 +40,10 @@ class Camera(Enum):
     GLOBAL = 2
 
 
-
-
 ## ******** USER PARAMETERS ******** 
 initial_locals = locals().copy() # exclude above local variables from parameter list
 data_dir = 'data/run1/' # writes data to this folder path (WARNING: will overwrite be careful)
-airsim_map = Maps.BLOCKS # airsim map to launch and run in 
+airsim_map = Maps.MOUNTAINS # airsim map to launch and run in 
 release_path = airsim_map.value
 default_settings = Defaults.DEFAULT
 base_settings_path = default_settings.value # relative path to initial default settings file
@@ -50,17 +52,16 @@ display_windowed = True # True will launch AirSim as a window (recommended) rath
 display_animals = False # True will have animals running around map
 self_stabilize = True # True will run custom script to stabilize drone after commands, otherwise can spin out of control -- 
 mode_control = Modes.DURATION # how to move drone between points, changes stability (DURATION recommended)
-drone_speed = 5 # average linear speed drone will move -- in m/s (recommend 2 for stability)
-start_position = [3, 0, 0] # will teleport drone to this position before starting trajectory
-positions_list = [ # list of positions for drone to sequentially visit, [x, y, z] in drone coordinates 
-    [3, 0, 0],
-    [3, 0, -4],
-    [10, 10, -6],
-    [20, -7, -10],
-    [4, -4, -6],
-    [4, -2, -4],
-    [3, 0, 0],
+drone_speed = 8 # average linear speed drone will move -- in m/s (recommend 2 for stability)
+positions_list = [ # list of positions for drone to sequentially visit, [x, y, z] in drone coordinates
+    [7, -8, -25],
+    [8, 6, -10],
+    [9, 7, -9],
+    [4, -3, -3],
+    [3, 3, -1]
 ] # drone coordinates: +x is forward facing from initial drone position, +y is right, +z is downwards
+
+start_position = positions_list[0] # will teleport drone to this position before starting trajectory
 data_types = [ # what type of data to collect at each frame
     Data.TIMESTAMP,
     Data.DRONE_POSITION,
@@ -82,8 +83,8 @@ camera_name = "FixedCamera"
     # 'bottom_center' or '3'
     # 'back_center' or '4'
 
-frame_rate =  1 # frames per second to capture data at during trajectory movement higher than 8 are unstable 
-collection_time = 30 # number of seconds to collect data for 
+frame_rate = 5 # frames per second to capture data at during trajectory movement higher than 8 are unstable 
+collection_time = 10 # number of seconds to collect data for 
 smile_for_the_camera = 0 # number of seconds to freeze screen at each frame for debugging/demo purposes -- you can set this to zero for actual data collection
 
 # save above parameters to write to file for future reference
@@ -189,7 +190,15 @@ try:
     
     # issue command to move drone on path 
     path = [airsim.Vector3r(*position) for position in positions_list]
-    move_future = client.moveOnPathAsync(path, velocity=drone_speed) # new thread, continue with code while this executes
+    move_future = client.moveOnPathAsync(
+        path=path,
+        velocity=drone_speed,
+        timeout_sec=60,
+        drivetrain=airsim.DrivetrainType.MaxDegreeOfFreedom,
+        lookahead=1,
+        adaptive_lookahead=1
+    ) # new thread, continue with code while this executes
+
     #client.moveOnPathAsync(path, velocity=drone_speed).join() # join will not continue code until this thread is done
     # capture data at given frame rate while drone is moving 
     n_frames = collection_time * frame_rate
@@ -296,6 +305,9 @@ try:
     # write frames data
     frames_path = os.path.join(data_dir, 'frames.p')
     pickle.dump(frames, open(frames_path, 'wb'))
+    #write settings file used for this run
+    settings_path = os.path.join(data_dir, 'settings.json')
+    json.dump(settings, open(settings_path, 'w'), indent=2)
     
     # wait for the trajectory to finish
     move_future.join()
