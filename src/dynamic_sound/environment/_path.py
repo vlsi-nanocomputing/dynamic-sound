@@ -69,6 +69,7 @@ class Path:
     def interpolate_path(self, num_points=50):
         # Split input
         t = self.positions[:, 0]
+        kind = "cubic" if len(t) >= 4 else "linear"
         pos = self.positions[:, 1:4]
         quat = self.positions[:, 4:8]
 
@@ -78,7 +79,7 @@ class Path:
         # --- Position interpolation ---
         interp_pos = np.zeros((num_points, 3))
         for i in range(3):
-            f = interp1d(t, pos[:, i], kind='cubic')
+            f = interp1d(t, pos[:, i], kind=kind)
             interp_pos[:, i] = f(t_new)
 
         # --- Quaternion interpolation ---

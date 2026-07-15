@@ -3,7 +3,7 @@ import numpy as np
 import soundfile as sf
 
 
-def sine_generator(f: float, fs: int = 48000, amplitude: float = 1.0, length: int|str = "period", filename: str = None, raw: bool = False, type: str = None) -> tuple[np.ndarray, dict]:
+def sine_generator(f: float, fs: int = 48000, amplitude: float = 1.0, length: int|str = "period", filename: str = None, type: str = None) -> tuple[np.ndarray, dict]:
     """
     Generate a sine wave.
     Args:
