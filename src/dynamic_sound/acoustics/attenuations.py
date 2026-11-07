@@ -2,7 +2,7 @@
 __all__ = [
     "geometric",
     "material_reflection",
-    "DirectivityType"
+    "DirectivityType",
     "directivity"
 ]
 
